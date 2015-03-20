@@ -12,12 +12,18 @@
   ],
   "homepage": "https://github.com/mohayonao/web-audio-api-shim/",
   "keywords": [
-    "webaudioapi",
+    "webaudioapi"
   ],
   "licenses": "MIT",
   "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/mohayonao/web-audio-api-shim.git"
+  },
+  "devDependencies": {
+    "babelify": "^5.0.4",
+    "jshint": "^2.6.3",
+    "jshint-stylish": "^1.0.1",
+    "uglify-js": "^2.4.17"
   }
 }
