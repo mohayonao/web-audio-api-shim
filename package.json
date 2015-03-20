@@ -1,0 +1,23 @@
+{
+  "name": "web-audio-api-shim",
+  "version": "0.0.0",
+  "author": "Nao Yonamine <mohayonao@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/mohayonao/web-audio-api-shim/issues"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "lib"
+  ],
+  "homepage": "https://github.com/mohayonao/web-audio-api-shim/",
+  "keywords": [
+    "webaudioapi",
+  ],
+  "licenses": "MIT",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohayonao/web-audio-api-shim.git"
+  }
+}
