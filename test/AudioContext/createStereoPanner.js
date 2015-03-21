@@ -6,7 +6,7 @@
 
   describe("AudioContext.prototype.createStereoPanner", function() {
     var context;
-    if (!/\[native code\]/.test(global.AudioContext.prototype.createStereoPanner.toString())) {
+    if (!/\[native code\]/.test(global.AudioContext.prototype.createStereoPanner)) {
       context = "shim";
     } else {
       context = "native";
