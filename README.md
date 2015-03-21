@@ -22,15 +22,28 @@ downloads:
 - `OffelinAudioContext.startRendering()`
 
 ## TODO
+- `AudioContext.prototype.createAudioWorker()`
 - `AudioContext.prototype.get state`
 - `AudioContext.prototype.suspend()`
 - `AudioContext.prototype.resume()`
 - `AudioContext.prototype.close()`
-- `AudioContext.prototype.createAudioWorker()`
 - `AudioNode.prototype.disconnect()`
 
+## Native API Supports
+|                    | Chrome | Firefox | Safari |
+| -------------------|:------:|:-------:|:------:|
+| createAudioWorker  | :x: 41 | :x: 36  | :x: 8  |
+| createStereoPanner | :o: 41 | :x: 36  | :x: 8  |
+| disconnect         | :x: 41 | :x: 36  | :x: 8  |
+| decodeAudioData    | :x: 41 | :o: 36  | :x: 8  |
+| startRendering     | :x: 41 | :x: 36  | :x: 8  |
+| get state          | :o: 41 | :x: 36  | :x: 8  |
+| suspend            | :o: 41 | :x: 36  | :x: 8  |
+| resume             | :o: 41 | :x: 36  | :x: 8  |
+| close              | :o: 41 | :x: 36  | :x: 8  |
+
 ## Online test suites
-- [test - web-audio-api-shim](./test)
+- [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)
 
 ## License
 MIT
