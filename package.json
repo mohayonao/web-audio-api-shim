@@ -1,9 +1,24 @@
 {
   "name": "web-audio-api-shim",
+  "description": "shim for legacy Web Audio API",
   "version": "0.0.0",
   "author": "Nao Yonamine <mohayonao@gmail.com>",
   "bugs": {
     "url": "https://github.com/mohayonao/web-audio-api-shim/issues"
+  },
+  "devDependencies": {
+    "babel": "^4.7.16",
+    "babelify": "^5.0.4",
+    "browserify": "^9.0.3",
+    "jshint": "^2.6.3",
+    "jshint-stylish": "^1.0.1",
+    "karma": "^0.12.31",
+    "karma-browserify": "^4.0.0",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.1.10",
+    "mocha": "^2.2.1",
+    "uglify-js": "^2.4.17"
   },
   "files": [
     "package.json",
@@ -15,15 +30,18 @@
     "webaudioapi"
   ],
   "licenses": "MIT",
-  "main": "./index.js",
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/mohayonao/web-audio-api-shim.git"
   },
-  "devDependencies": {
-    "babelify": "^5.0.4",
-    "jshint": "^2.6.3",
-    "jshint-stylish": "^1.0.1",
-    "uglify-js": "^2.4.17"
+  "scripts": {
+    "build": "npm run build-to5 && npm run build-browser && npm run build-minify",
+    "build-browser": "browserify ./lib/index.js --outfile build/web-audio-api-shim.js",
+    "build-minify": "uglifyjs build/web-audio-api-shim.js -m -r self -o build/web-audio-api-shim.min.js",
+    "build-to5": "babel src --out-dir lib",
+    "lint": "jshint src test --reporter node_modules/jshint-stylish/stylish.js",
+    "test": "karma start",
+    "travis": "npm run lint && npm run test"
   }
 }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>web-audio-api-shim</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="//cdn.jsdelivr.net/es6-promise/1.0.0/promise.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div id="contents"></div>
+  </div>
+  <script>
+  window.fetch = window.fetch || function(url) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url);
+      xhr.onload = function() {
+        resolve({
+          text: function() {
+            return Promise.resolve(xhr.response);
+          },
+          json: function() {
+            return Promise.resolve(JSON.parse(xhr.response));
+          }
+        });
+      };
+      xhr.onerror = reject;
+      xhr.send();
+    });
+  };
+  window.onload = function() {
+    "use strict";
+    var docIndex = [
+      "README.md",
+    ];
+    marked.setOptions({
+      renderer: (function() {
+        var renderer = new marked.Renderer();
+        renderer.code = function(code) {
+          return "<pre class='prettyprint'>" + code + "</pre>";
+        };
+        renderer.table = function(header, body) {
+          return "<table class='table'>" + header + body + "</table>";
+        };
+        return renderer;
+      })(),
+    });
+    function mdFromPackageJSON(pkg) {
+      return [
+        "# " + pkg.name,
+        pkg.description || ""
+      ].join("\n");
+    }
+    function mdFromSourceCode(text) {
+      var re = /^\s*\/\/\/\/(?:\s(.*))?$/;
+      return text.split("\n").map(function(line) {
+        return re.exec(line);
+      }).filter(function(m) {
+        return !!m;
+      }).map(function(m) {
+        return m[1];
+      }).join("\n");
+    }
+    function flatten(array) {
+      return Array.prototype.concat.apply([], array);
+    }
+    function emoji(text) {
+      var O = '<img class="emoji" title=":o:" alt=":o:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2b55.png" height="20" width="20" align="absmiddle">';
+      var X = '<img class="emoji" title=":x:" alt=":x:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/274c.png" height="20" width="20" align="absmiddle">';
+
+      text = text.replace(/:o:/g, O);
+      text = text.replace(/:x:/g, X);
+
+      return text;
+    }
+    Promise.resolve(docIndex).then(function(documentIndex) {
+      return Promise.all(documentIndex.map(function(path) {
+        if (!/\.\w+$/.test(path)) {
+          return path;
+        }
+        return fetch(path).then(function(res) {
+          return res.text();
+        }).then(function(text) {
+          if (/package\.json$/.test(path)) {
+            text = mdFromPackageJSON(JSON.parse(text));
+          } else if (!/\.md$/.test(path)) {
+            text = mdFromSourceCode(text);
+          }
+          return text;
+        });
+      })).then(function(docs) {
+        flatten(docs.map(function(doc) {
+          var div = document.createElement("div");
+          var md = marked(doc)
+
+          md = emoji(md);
+
+          div.innerHTML = md;
+          return div;
+        })).forEach(function(elem) {
+          document.getElementById("contents").appendChild(elem);
+        });
+      });
+    }).then(prettyPrint);
+  };
+  </script>
+</body>
+</html>
