@@ -14,7 +14,7 @@
     describe(context, function() {
       describe("(): Promise<AudioBuffer>", function() {
         it("should resolve with an AudioBuffer", function() {
-          var context = new global.OfflineAudioContext(1, 100, 44100);
+          var context = new global.OfflineAudioContext(1, 1, 44100);
           var promise = context.startRendering();
 
           assert(promise instanceof Promise, "should return a Promise");

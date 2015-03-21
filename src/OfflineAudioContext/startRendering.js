@@ -21,11 +21,13 @@ if (!isPromiseBased) {
   //// - `Promise<AudioBuffer>`
   OfflineAudioContext.prototype.startRendering = function() {
     return new Promise((resolve) => {
-      let oncomplete = (e) => {
+      let oncomplete = this.oncomplete;
+      this.oncomplete = (e) => {
         resolve(e.renderedBuffer);
-        this.removeEventListener("complete", oncomplete);
+        if (typeof oncomplete === "function") {
+          oncomplete.call(this, e);
+        }
       };
-      this.addEventListener("complete", oncomplete);
       startRendering.call(this);
     });
   };
