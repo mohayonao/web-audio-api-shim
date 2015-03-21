@@ -17,6 +17,8 @@ downloads:
 - [web-audio-api-shim.min.js](https://raw.githubusercontent.com/mohayonao/web-audio-api-shim/master/build/web-audio-api-shim.min.js)
 
 ## Implemented
+- `AudioBuffer.prototype.copyFromChannel()`
+- `AudioBuffer.prototype.copyToChannel()`
 - `AudioContext.prototype.createStereoPanner()`
 - `AudioContext.prototype.decodeAudioData()`
 - `OffelinAudioContext.startRendering()`
@@ -32,6 +34,8 @@ downloads:
 ## Native API Supports
 |                    | Shim | Chrome | Firefox | Safari |
 | -------------------|:----:|:------:|:-------:|:------:|
+| copyFromChannel    | :o:  | :x: 41 | :o: 36  | :x: 8  |
+| copyToChannel      | :o:  | :x: 41 | :o: 36  | :x: 8  |
 | createAudioWorker  | :x:  | :x: 41 | :x: 36  | :x: 8  |
 | createStereoPanner | :o:  | :o: 41 | :x: 36  | :x: 8  |
 | decodeAudioData    | :o:  | :x: 41 | :o: 36  | :x: 8  |
