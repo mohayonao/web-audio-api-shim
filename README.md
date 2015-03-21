@@ -23,24 +23,24 @@ downloads:
 
 ## TODO
 - `AudioContext.prototype.createAudioWorker()`
-- `AudioContext.prototype.get state`
-- `AudioContext.prototype.suspend()`
-- `AudioContext.prototype.resume()`
 - `AudioContext.prototype.close()`
+- `AudioContext.prototype.resume()`
+- `AudioContext.prototype.suspend()`
+- `AudioContext.prototype.state`
 - `AudioNode.prototype.disconnect()`
 
 ## Native API Supports
-|                    | Chrome | Firefox | Safari |
-| -------------------|:------:|:-------:|:------:|
-| createAudioWorker  | :x: 41 | :x: 36  | :x: 8  |
-| createStereoPanner | :o: 41 | :x: 36  | :x: 8  |
-| disconnect         | :x: 41 | :x: 36  | :x: 8  |
-| decodeAudioData    | :x: 41 | :o: 36  | :x: 8  |
-| startRendering     | :x: 41 | :x: 36  | :x: 8  |
-| get state          | :o: 41 | :x: 36  | :x: 8  |
-| suspend            | :o: 41 | :x: 36  | :x: 8  |
-| resume             | :o: 41 | :x: 36  | :x: 8  |
-| close              | :o: 41 | :x: 36  | :x: 8  |
+|                    | Shim | Chrome | Firefox | Safari |
+| -------------------|:----:|:------:|:-------:|:------:|
+| createAudioWorker  | :x:  | :x: 41 | :x: 36  | :x: 8  |
+| createStereoPanner | :o:  | :o: 41 | :x: 36  | :x: 8  |
+| decodeAudioData    | :o:  | :x: 41 | :o: 36  | :x: 8  |
+| close              | :x:  | :o: 41 | :x: 36  | :x: 8  |
+| suspend            | :x:  | :o: 41 | :x: 36  | :x: 8  |
+| resume             | :x:  | :o: 41 | :x: 36  | :x: 8  |
+| state              | :x:  | :o: 41 | :x: 36  | :x: 8  |
+| startRendering     | :o:  | :x: 41 | :x: 36  | :x: 8  |
+| disconnect         | :x:  | :x: 41 | :x: 36  | :x: 8  |
 
 ## Online test suites
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)
