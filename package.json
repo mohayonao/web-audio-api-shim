@@ -6,6 +6,9 @@
   "bugs": {
     "url": "https://github.com/mohayonao/web-audio-api-shim/issues"
   },
+  "dependencies": {
+    "stereo-panner-node": "^0.1.4"
+  },
   "devDependencies": {
     "babel": "^4.7.16",
     "babelify": "^5.0.4",
