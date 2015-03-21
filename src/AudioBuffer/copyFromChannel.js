@@ -5,9 +5,12 @@ if (!global.AudioBuffer.prototype.copyFromChannel) {
   //// The `copyFromChannel` method copies the samples from the specified channel of the **`AudioBuffer`** to the `destination` array.
   ////
   //// #### Parameters
-  //// - `destination: Float32Array` - The array the channel data will be copied to.
-  //// - `channelNumber: number` - The index of the channel to copy the data from.
-  //// - `startInChannel: number = 0` _(optional)_ - An optional offset to copy the data from.
+  //// - `destination: Float32Array`
+  ////   - The array the channel data will be copied to.
+  //// - `channelNumber: number`
+  ////   - The index of the channel to copy the data from.
+  //// - `startInChannel: number = 0`
+  ////   - An optional offset to copy the data from.
   ////
   //// #### Return
   //// - `void`

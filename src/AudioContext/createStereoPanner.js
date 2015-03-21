@@ -10,7 +10,7 @@ if (!global.AudioContext.prototype.createStereoPanner) {
   //// - _none_
   ////
   //// #### Return
-  //// - `AudioNode` as `StereoPannerNode`
+  //// - `AudioNode as StereoPannerNode`
   global.AudioContext.prototype.createStereoPanner = function() {
     return new StereoPannerNode(this);
   };

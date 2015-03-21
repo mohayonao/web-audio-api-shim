@@ -5,7 +5,7 @@
 
 > shim for legacy Web Audio API
 
-## Spec
+## Specification
 - [Web Audio API - W3C Editor's Draft 18 March 2015](http://webaudio.github.io/web-audio-api/)
 
 ## Installation
@@ -17,19 +17,19 @@ downloads:
 - [web-audio-api-shim.min.js](https://raw.githubusercontent.com/mohayonao/web-audio-api-shim/master/build/web-audio-api-shim.min.js)
 
 ## Implemented
-- `AudioBuffer.prototype.copyFromChannel()`
-- `AudioBuffer.prototype.copyToChannel()`
-- `AudioContext.prototype.createStereoPanner()`
-- `AudioContext.prototype.decodeAudioData()`
-- `OffelinAudioContext.startRendering()`
+- `AudioBuffer#copyFromChannel`
+- `AudioBuffer#copyToChannel`
+- `AudioContext#createStereoPanner`
+- `AudioContext#decodeAudioData`
+- `OffelinAudioContext#startRendering`
 
 ## TODO
-- `AudioContext.prototype.createAudioWorker()`
-- `AudioContext.prototype.close()`
-- `AudioContext.prototype.resume()`
-- `AudioContext.prototype.suspend()`
-- `AudioContext.prototype.state`
-- `AudioNode.prototype.disconnect()`
+- `AudioContext#createAudioWorker`
+- `AudioContext#close`
+- `AudioContext#resume`
+- `AudioContext#suspend`
+- `AudioContext#state`
+- `AudioNode#disconnect`
 
 ## Native API Supports
 |                    | Shim | Chrome | Firefox | Opera  | Safari |
@@ -50,4 +50,4 @@ downloads:
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)
 
 ## License
-MIT
+- MIT

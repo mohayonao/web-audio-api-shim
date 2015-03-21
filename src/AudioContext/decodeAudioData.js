@@ -18,9 +18,12 @@ if (!isPromiseBased) {
   //// Asynchronously decodes the audio file data contained in the ArrayBuffer.
   ////
   //// #### Parameters
-  //// - `audioData: ArrayBuffer` - An ArrayBuffer containing compressed audio data
-  //// - `successCallback: function` _(optional)_ - A callback function which will be invoked when the decoding is finished.
-  //// - `errorCallback: function` _(optional)_ - A callback function which will be invoked if there is an error decoding the audio file.
+  //// - `audioData: ArrayBuffer`
+  ////   - An ArrayBuffer containing compressed audio data
+  //// - `successCallback: function = null`
+  ////   - A callback function which will be invoked when the decoding is finished.
+  //// - `errorCallback: function = null`
+  ////   - A callback function which will be invoked if there is an error decoding the audio file.
   ////
   //// #### Return
   //// - `Promise<AudioBuffer>`
