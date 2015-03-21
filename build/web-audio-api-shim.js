@@ -2,6 +2,53 @@
 (function (global){
 "use strict";
 
+if (!global.AudioBuffer.prototype.copyFromChannel) {
+  //// ### AudioBuffer.prototype.copyFromChannel
+  //// The `copyFromChannel` method copies the samples from the specified channel of the **`AudioBuffer`** to the `destination` array.
+  ////
+  //// #### Parameters
+  //// - `destination: Float32Array` - The array the channel data will be copied to.
+  //// - `channelNumber: number` - The index of the channel to copy the data from.
+  //// - `startInChannel: number = 0` _(optional)_ - An optional offset to copy the data from.
+  ////
+  //// #### Return
+  //// - `void`
+  global.AudioBuffer.prototype.copyFromChannel = function (destination, channelNumber, startInChannel) {
+    var source = this.getChannelData(channelNumber | 0).subarray(startInChannel | 0);
+    destination.set(source.subarray(0, Math.min(source.length, destination.length)));
+  };
+}
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],2:[function(require,module,exports){
+(function (global){
+"use strict";
+
+if (!global.AudioBuffer.prototype.copyToChannel) {
+  //// ### AudioBuffer.prototype.copyToChannel
+  //// The `copyToChannel` method copies the samples to the specified channel of the **`AudioBuffer`**, from the `source` array.
+  ////
+  //// #### Parameters
+  //// - `source: Float32Array` - The array the channel data will be copied from.
+  //// - `channelNumber: number` - The index of the channel to copy the data to.
+  //// - `startInChannel: number = 0` _(optional)_ - An optional offset to copy the data to.
+  ////
+  //// #### Return
+  //// - `void`
+  global.AudioBuffer.prototype.copyToChannel = function (source, channelNumber, startInChannel) {
+    this.getChannelData(channelNumber).set(source, startInChannel | 0);
+  };
+}
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],3:[function(require,module,exports){
+"use strict";
+
+require("./copyFromChannel");
+
+require("./copyToChannel");
+},{"./copyFromChannel":1,"./copyToChannel":2}],4:[function(require,module,exports){
+(function (global){
+"use strict";
+
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
 var StereoPannerNode = _interopRequire(require("stereo-panner-node"));
@@ -20,7 +67,7 @@ if (!global.AudioContext.prototype.createStereoPanner) {
   };
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"stereo-panner-node":9}],2:[function(require,module,exports){
+},{"stereo-panner-node":12}],5:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -60,7 +107,7 @@ if (!isPromiseBased) {
   })();
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -71,11 +118,11 @@ require("./createStereoPanner");
 
 require("./decodeAudioData");
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./createStereoPanner":1,"./decodeAudioData":2}],4:[function(require,module,exports){
+},{"./createStereoPanner":4,"./decodeAudioData":5}],7:[function(require,module,exports){
 "use strict";
 
 require("./startRendering");
-},{"./startRendering":5}],5:[function(require,module,exports){
+},{"./startRendering":8}],8:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -117,13 +164,15 @@ if (!isPromiseBased) {
   })();
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
+
+require("./AudioBuffer");
 
 require("./AudioContext");
 
 require("./OfflineAudioContext");
-},{"./AudioContext":3,"./OfflineAudioContext":4}],7:[function(require,module,exports){
+},{"./AudioBuffer":3,"./AudioContext":6,"./OfflineAudioContext":7}],10:[function(require,module,exports){
 "use strict";
 
 var WS_CURVE_SIZE = 4096;
@@ -142,7 +191,7 @@ module.exports = {
   R: curveR,
 };
 
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -243,7 +292,7 @@ StereoPannerImpl.prototype.disconnect = function() {
 module.exports = StereoPannerImpl;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./curve":7}],9:[function(require,module,exports){
+},{"./curve":10}],12:[function(require,module,exports){
 "use strict";
 
 var StereoPannerImpl = require("./stereo-panner-impl");
@@ -273,4 +322,4 @@ function StereoPanner(audioContext) {
 
 module.exports = StereoPanner;
 
-},{"./stereo-panner-impl":8}]},{},[6]);
+},{"./stereo-panner-impl":11}]},{},[9]);
