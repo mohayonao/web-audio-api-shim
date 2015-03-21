@@ -14,7 +14,7 @@
     describe(context, function() {
       function validAudioData() {
         return new Uint32Array([
-          1179011410,44,1163280727,544501094,16,131073,44100,176400,1048580,1635017060,8,0,0
+          1179011410,52,1163280727,544501094,16,131073,44100,176400,1048580,1635017060,16,0,0,0,0
         ]).buffer;
       }
       function invalidAudioData() {
