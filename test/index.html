@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>test - web-audio-api-shim</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/2.2.1/mocha.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/2.2.1/mocha.min.js"></script>
+    <script src="../build/web-audio-api-shim.js"></script>
+    <script>
+      window.global = window;
+      window.assert = function(value, message) {
+        if (!value) {
+          throw new Error(message);
+        }
+      };
+      window.require = function() {};
+      window.onload = function() {
+        window.audioContext = new AudioContext();
+        mocha.run();
+      };
+      mocha.setup("bdd");
+    </script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="AudioContext/createStereoPanner.js"></script>
+    <script src="AudioContext/decodeAudioData.js"></script>
+    <script src="OfflineAudioContext/startRendering.js"></script>
+  </body>
+</html>
