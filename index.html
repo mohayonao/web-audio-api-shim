@@ -8,6 +8,7 @@
   <script src="//cdn.jsdelivr.net/es6-promise/1.0.0/promise.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+  <script src="build/web-audio-api-shim.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -36,6 +37,10 @@
     "use strict";
     var docIndex = [
       "README.md",
+      "## API documents",
+      "src/AudioContext/createStereoPanner.js",
+      "src/AudioContext/decodeAudioData.js",
+      "src/OfflineAudioContext/startRendering.js",
     ];
     marked.setOptions({
       renderer: (function() {
