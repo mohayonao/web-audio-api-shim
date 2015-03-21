@@ -61,11 +61,16 @@ if (!isPromiseBased) {
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(require,module,exports){
+(function (global){
 "use strict";
+
+global.AudioContext = global.AudioContext || global.webkitAudioContext;
+global.OfflineAudioContext = global.OfflineAudioContext || global.webkitOfflineAudioContext;
 
 require("./createStereoPanner");
 
 require("./decodeAudioData");
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./createStereoPanner":1,"./decodeAudioData":2}],4:[function(require,module,exports){
 "use strict";
 
@@ -98,11 +103,13 @@ if (!isPromiseBased) {
       var _this = this;
 
       return new Promise(function (resolve) {
-        var oncomplete = function (e) {
+        var oncomplete = _this.oncomplete;
+        _this.oncomplete = function (e) {
           resolve(e.renderedBuffer);
-          _this.removeEventListener("complete", oncomplete);
+          if (typeof oncomplete === "function") {
+            oncomplete.call(_this, e);
+          }
         };
-        _this.addEventListener("complete", oncomplete);
         startRendering.call(_this);
       });
     };
