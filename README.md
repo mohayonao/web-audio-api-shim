@@ -19,12 +19,12 @@ downloads:
 ## Implemented
 - `AudioBuffer#copyFromChannel`
 - `AudioBuffer#copyToChannel`
+- `AudioContext#createAudioWorker`
 - `AudioContext#createStereoPanner`
 - `AudioContext#decodeAudioData`
 - `OffelinAudioContext#startRendering`
 
 ## TODO
-- `AudioContext#createAudioWorker`
 - `AudioContext#close`
 - `AudioContext#resume`
 - `AudioContext#suspend`
@@ -36,7 +36,7 @@ downloads:
 | -------------------|:----:|:------:|:-------:|:------:|:------:|
 | copyFromChannel    | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
 | copyToChannel      | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
-| createAudioWorker  | :x:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
+| createAudioWorker  | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
 | createStereoPanner | :o:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
 | decodeAudioData    | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
 | close              | :x:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
