@@ -17,6 +17,7 @@ downloads:
 - [web-audio-api-shim.min.js](https://raw.githubusercontent.com/mohayonao/web-audio-api-shim/master/build/web-audio-api-shim.min.js)
 
 ## Implemented
+- `AnalyserNode#getFloatTimeDomainData`
 - `AudioBuffer#copyFromChannel`
 - `AudioBuffer#copyToChannel`
 - `AudioContext#createAudioWorker`
@@ -32,19 +33,20 @@ downloads:
 - `AudioNode#disconnect`
 
 ## Native API Supports
-|                    | Shim | Chrome | Firefox | Opera  | Safari |
-| -------------------|:----:|:------:|:-------:|:------:|:------:|
-| copyFromChannel    | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
-| copyToChannel      | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
-| createAudioWorker  | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
-| createStereoPanner | :o:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
-| decodeAudioData    | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
-| close              | :x:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
-| suspend            | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
-| resume             | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
-| state              | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
-| startRendering     | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
-| disconnect         | :x:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
+|                        | Shim | Chrome | Firefox | Opera  | Safari |
+| -----------------------|:----:|:------:|:-------:|:------:|:------:|
+| getFloatTimeDomainData | :o:  | :o: 35 | :o: 35  | :o: 27 | :x: 8  |
+| copyFromChannel        | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
+| copyToChannel          | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
+| createAudioWorker      | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
+| createStereoPanner     | :o:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
+| decodeAudioData        | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
+| close                  | :x:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
+| suspend                | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
+| resume                 | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
+| state                  | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
+| startRendering         | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
+| disconnect             | :x:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
 
 ## Online test suites
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)
