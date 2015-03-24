@@ -10,8 +10,15 @@
       window.global = window;
       window.require = function() {};
       window.onload = function() {
-        document.getElementById("ua").innerHTML = window.navigator.userAgent;
-        mocha.run();
+        var ua = window.navigator.userAgent;
+        document.getElementById("ua").innerHTML = ua;
+        document.getElementById("test").onclick = function(e) {
+          e.target.style.display = "none";
+          mocha.run();
+        };
+        if (!/i(Phone|Pad|Pod)/.test(ua)) {
+          document.getElementById("test").click();
+        }
       };
       mocha.setup("bdd");
     </script>
@@ -20,6 +27,7 @@
     <div id="mocha">
       <h1>web-audio-api-shim</h1>
       <h2 id="ua" style="font-size:0.6em"></h2>
+      <button id="test">Start Test</button>
     </div>
     <script src="bootstrap.js"></script>
     <script src="AnalyserNode/getFloatTimeDomainData.js"></script>

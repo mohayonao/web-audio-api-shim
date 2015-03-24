@@ -17,10 +17,4 @@ global.getShimType = function(func) {
   }
   return "shim";
 };
-global.it.unless_on_iOS = function(title, fn) {
-  if (/i(Phone|Pad|Pod)/.test(window.navigator.userAgent)) {
-    return it.skip("this test cannot be run on iOS", function() {});
-  }
-  return it(title, fn);
-};
 /* jshint ignore: end */

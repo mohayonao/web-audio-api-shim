@@ -9,11 +9,13 @@
 
     describe(context, function() {
       describe("(array: Float32Array): void", function() {
-        it.unless_on_iOS("works", function(done) {
-          var buffer = audioContext.createBuffer(1, 4, audioContext.sampleRate);
-          var bufSrc = audioContext.createBufferSource();
-          var analyser = audioContext.createAnalyser();
-          var gain = audioContext.createGain();
+        var buffer, bufSrc, analyser, mute;
+
+        before(function() {
+          buffer = audioContext.createBuffer(1, 4, audioContext.sampleRate);
+          bufSrc = audioContext.createBufferSource();
+          analyser = audioContext.createAnalyser();
+          mute = audioContext.createGain();
 
           buffer.getChannelData(0).set([ -1, -1/3, +1/3, +1 ]);
 
@@ -22,30 +24,37 @@
           bufSrc.start(audioContext.currentTime);
 
           analyser.fftSize = 32;
-          gain.gain.value = 0;
+          mute.gain.value = 0;
 
           bufSrc.connect(analyser);
-          analyser.connect(gain);
-          gain.connect(audioContext.destination);
+          analyser.connect(mute);
+          mute.connect(audioContext.destination);
+        });
+        after(function() {
+          bufSrc.stop(audioContext.currentTime);
+          bufSrc.disconnect();
+          analyser.disconnect();
+          mute.disconnect();
+        });
+        it("should copy the current time-domain (waveform) data into the passed floating-point array", function(done) {
+          var array = new Float32Array(32);
 
-          setTimeout(function() {
-            var array = new Float32Array(32);
-
+          function test() {
             analyser.getFloatTimeDomainData(array);
+
+            if (array[0] === 0) {
+              return setTimeout(test, 20);
+            }
 
             assert(array[0] !== array[1]);
             assert(array[1] !== array[2]);
             assert(array[2] !== array[3]);
             assert(array[0] === array[4]);
 
-            setTimeout(function() {
-              bufSrc.stop(audioContext.currentTime);
-              bufSrc.disconnect();
-              analyser.disconnect();
-              gain.disconnect();
-              done();
-            }, 0);
-          }, 50);
+            setTimeout(done, 0);
+          }
+
+          test();
         });
       });
     });

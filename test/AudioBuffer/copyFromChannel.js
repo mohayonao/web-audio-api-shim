@@ -14,7 +14,7 @@
         }
       }
       describe("(destination: Float32Array, channelNumber: number, startInChannel: number): void", function() {
-        it("works", function() {
+        it("should copy the samples from the specified channel of the AudioBuffer to the destination array", function() {
           var channelData = [ new Float32Array(100), new Float32Array(100) ];
           var destination = [ new Float32Array( 50), new Float32Array( 50) ];
 

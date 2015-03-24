@@ -14,7 +14,7 @@
         }
       }
       describe("(source: Float32Array, channelNumber: number, startInChannel: number): void", function() {
-        it("works", function() {
+        it("should copy the samples to the specified channel of the AudioBuffer, from the source array", function() {
           var source = [ new Float32Array(50), new Float32Array(50) ];
 
           writeNoise(source[0]);

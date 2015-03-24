@@ -9,7 +9,18 @@
 
     describe.skip(context, function() {
       describe("(): Promise<void>", function() {
-        it("should return a Promise", function() {
+        it("should resolve", function() {
+        });
+      });
+    });
+  });
+
+  describe("OfflineAudioContext.prototype.resume", function() {
+    var context = global.getShimType(global.OfflineAudioContext.prototype.resume);
+
+    describe.skip(context, function() {
+      describe("(): Promise<void>", function() {
+        it("should reject", function() {
         });
       });
     });
