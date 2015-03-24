@@ -2,6 +2,36 @@
 (function (global){
 "use strict";
 
+if (!global.AnalyserNode.prototype.getFloatTimeDomainData) {
+  (function () {
+    var uint8 = new Uint8Array(2048);
+
+    //// ### AnalyserNode.prototype.getFloatTimeDomainData
+    //// Copies the current time-domain (waveform) data into the passed floating-point array.
+    ////
+    //// #### Parameters
+    //// - `array: Float32Array`
+    ////   - This parameter is where the time-domain sample data will be copied.
+    ////
+    //// #### Return
+    //// - `void`
+    global.AnalyserNode.prototype.getFloatTimeDomainData = function (array) {
+      this.getByteTimeDomainData(uint8);
+      for (var i = 0, imax = array.length; i < imax; i++) {
+        array[i] = (uint8[i] - 128) * 0.0078125;
+      }
+    };
+  })();
+}
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],2:[function(require,module,exports){
+"use strict";
+
+require("./getFloatTimeDomainData");
+},{"./getFloatTimeDomainData":1}],3:[function(require,module,exports){
+(function (global){
+"use strict";
+
 if (!global.AudioBuffer.prototype.copyFromChannel) {
   //// ### AudioBuffer.prototype.copyFromChannel
   //// The `copyFromChannel` method copies the samples from the specified channel of the **`AudioBuffer`** to the `destination` array.
@@ -22,7 +52,7 @@ if (!global.AudioBuffer.prototype.copyFromChannel) {
   };
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],2:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -45,13 +75,13 @@ if (!global.AudioBuffer.prototype.copyToChannel) {
   };
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 require("./copyFromChannel");
 
 require("./copyToChannel");
-},{"./copyFromChannel":1,"./copyToChannel":2}],4:[function(require,module,exports){
+},{"./copyFromChannel":3,"./copyToChannel":4}],6:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -78,7 +108,7 @@ if (!global.AudioContext.prototype.createAudioWorker) {
   };
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"audio-worker-node":17}],5:[function(require,module,exports){
+},{"audio-worker-node":19}],7:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -100,7 +130,7 @@ if (!global.AudioContext.prototype.createStereoPanner) {
   };
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"stereo-panner-node":23}],6:[function(require,module,exports){
+},{"stereo-panner-node":25}],8:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -143,7 +173,7 @@ if (!isPromiseBased) {
   })();
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -156,11 +186,11 @@ require("./createStereoPanner");
 
 require("./decodeAudioData");
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./createAudioWorker":4,"./createStereoPanner":5,"./decodeAudioData":6}],8:[function(require,module,exports){
+},{"./createAudioWorker":6,"./createStereoPanner":7,"./decodeAudioData":8}],10:[function(require,module,exports){
 "use strict";
 
 require("./startRendering");
-},{"./startRendering":9}],9:[function(require,module,exports){
+},{"./startRendering":11}],11:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -202,15 +232,17 @@ if (!isPromiseBased) {
   })();
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
+
+require("./AnalyserNode");
 
 require("./AudioBuffer");
 
 require("./AudioContext");
 
 require("./OfflineAudioContext");
-},{"./AudioBuffer":3,"./AudioContext":7,"./OfflineAudioContext":8}],11:[function(require,module,exports){
+},{"./AnalyserNode":2,"./AudioBuffer":5,"./AudioContext":9,"./OfflineAudioContext":10}],13:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -252,7 +284,7 @@ AudioParamImpl.prototype.disconnect = function() {
 module.exports = AudioParamImpl;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 var AudioParamImpl = require("./audio-param-impl");
@@ -286,7 +318,7 @@ function AudioParamNode(audioContext, defaultValue, bufferSize) {
 
 module.exports = AudioParamNode;
 
-},{"./audio-param-impl":11}],13:[function(require,module,exports){
+},{"./audio-param-impl":13}],15:[function(require,module,exports){
 "use strict";
 
 var AudioProcessBuilder = {};
@@ -373,7 +405,7 @@ function build_onaudioprocess_n(opts) {
 
 module.exports = AudioProcessBuilder;
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 
 var WORKER_ATTRS = [
@@ -494,7 +526,7 @@ AudioWorkerCode.compile = function(src) {
 
 module.exports = AudioWorkerCode;
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 function AudioWorkerGlobalScope(node) {
@@ -556,7 +588,7 @@ function AudioWorkerGlobalScope(node) {
 
 module.exports = AudioWorkerGlobalScope;
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -716,7 +748,7 @@ AudioWorkerNodeImpl.prototype.importScripts = function() {
 module.exports = AudioWorkerNodeImpl;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./audio-param-node":12,"./audio-process-builder":13,"./audio-worker-code":14,"./audio-worker-global-scope":15,"./message-channel":18,"./script-loader":19}],17:[function(require,module,exports){
+},{"./audio-param-node":14,"./audio-process-builder":15,"./audio-worker-code":16,"./audio-worker-global-scope":17,"./message-channel":20,"./script-loader":21}],19:[function(require,module,exports){
 "use strict";
 
 var utils = require("./utils");
@@ -790,7 +822,7 @@ function AudioWorkerNode(audioContext, scriptURL, numberOfInputChannels, numberO
 }
 module.exports = AudioWorkerNode;
 
-},{"./audio-worker-impl":16,"./utils":20}],18:[function(require,module,exports){
+},{"./audio-worker-impl":18,"./utils":22}],20:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -853,7 +885,7 @@ MessagePort.prototype.close = function() {
 module.exports = global.MessageChannel || MessageChannelShim;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -873,7 +905,7 @@ ScriptLoader.load = function(scriptURL, callback) {
 module.exports = ScriptLoader;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 function defaults(value, defaultValue) {
@@ -884,7 +916,7 @@ module.exports = {
   defaults: defaults
 };
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 var WS_CURVE_SIZE = 4096;
@@ -903,7 +935,7 @@ module.exports = {
   R: curveR,
 };
 
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1004,7 +1036,7 @@ StereoPannerImpl.prototype.disconnect = function() {
 module.exports = StereoPannerImpl;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./curve":21}],23:[function(require,module,exports){
+},{"./curve":23}],25:[function(require,module,exports){
 "use strict";
 
 var StereoPannerImpl = require("./stereo-panner-impl");
@@ -1034,4 +1066,4 @@ function StereoPanner(audioContext) {
 
 module.exports = StereoPanner;
 
-},{"./stereo-panner-impl":22}]},{},[10]);
+},{"./stereo-panner-impl":24}]},{},[12]);
