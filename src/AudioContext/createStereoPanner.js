@@ -2,7 +2,9 @@
 
 import StereoPannerNode from "stereo-panner-node";
 
-if (!global.AudioContext.prototype.createStereoPanner) {
+let AudioContext = global.AudioContext;
+
+if (AudioContext && !AudioContext.prototype.hasOwnProperty("createStereoPanner")) {
   //// ### AudioContext.prototype.createStereoPanner
   //// Creates a StereoPannerNode.
   ////
@@ -11,7 +13,7 @@ if (!global.AudioContext.prototype.createStereoPanner) {
   ////
   //// #### Return
   //// - `AudioNode as StereoPannerNode`
-  global.AudioContext.prototype.createStereoPanner = function() {
+  AudioContext.prototype.createStereoPanner = function() {
     return new StereoPannerNode(this);
   };
 }

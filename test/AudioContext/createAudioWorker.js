@@ -2,14 +2,11 @@
   "use strict";
 
   require("../bootstrap");
+  require("../../src/AudioContext/createAudioWorker");
 
   describe("AudioContext.prototype.createAudioWorker", function() {
-    var context;
-    if (!/\[native code\]/.test(global.AudioContext.prototype.createAudioWorker)) {
-      context = "shim";
-    } else {
-      context = "native";
-    }
+    var context = global.getShimType(global.AudioContext.prototype.createAudioWorker);
+
     describe(context, function() {
       describe("(scriptURL: string, numberOfInputChannels: number, numberOfOutputChannels: number): AudioNode", function() {
         it("should return an AudioNode as AudioWorkerNode", function(done) {

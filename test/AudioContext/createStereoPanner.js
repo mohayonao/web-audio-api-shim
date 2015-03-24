@@ -5,12 +5,8 @@
   require("../../src/AudioContext/createStereoPanner");
 
   describe("AudioContext.prototype.createStereoPanner", function() {
-    var context;
-    if (!/\[native code\]/.test(global.AudioContext.prototype.createStereoPanner)) {
-      context = "shim";
-    } else {
-      context = "native";
-    }
+    var context = global.getShimType(global.AudioContext.prototype.createStereoPanner);
+
     describe(context, function() {
       describe("(): AudioNode", function() {
         it("should return an AudioNode as StereoPannerNode", function() {
