@@ -5,12 +5,8 @@
   require("../../src/AudioContext/decodeAudioData");
 
   describe("AudioContext.prototype.decodeAudioData", function() {
-    var context;
-    if (!!global.AudioContext.prototype.decodeAudioData.original) {
-      context = "shim";
-    } else {
-      context = "native";
-    }
+    var context = global.getShimType(global.AudioContext.prototype.decodeAudioData);
+
     describe(context, function() {
       function validAudioData() {
         return new Uint32Array([

@@ -2,7 +2,9 @@
 
 import AudioWorkerNode from "audio-worker-node";
 
-if (!global.AudioContext.prototype.createAudioWorker) {
+let AudioContext = global.AudioContext;
+
+if (AudioContext && !AudioContext.prototype.hasOwnProperty("createAudioWorker")) {
   //// ### AudioContext.prototype.createAudioWorker
   //// Creates an **`AudioWorkerNode`** and its associated **`AudioWorkerGlobalScope`** for direct audio processing using JavaScript.
   ////
@@ -16,7 +18,7 @@ if (!global.AudioContext.prototype.createAudioWorker) {
   ////
   //// #### Return
   //// - `AudioNode as AudioWorkerNode`
-  global.AudioContext.prototype.createAudioWorker = function(scriptURL, numberOfInputChannels, numberOfOutputChannels) {
+  AudioContext.prototype.createAudioWorker = function(scriptURL, numberOfInputChannels, numberOfOutputChannels) {
     return new AudioWorkerNode(this, scriptURL, numberOfInputChannels, numberOfOutputChannels);
   };
 }

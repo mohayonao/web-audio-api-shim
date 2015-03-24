@@ -8,15 +8,9 @@
     <script src="../build/web-audio-api-shim.js"></script>
     <script>
       window.global = window;
-      window.assert = function(value, message) {
-        if (!value) {
-          throw new Error(message);
-        }
-      };
       window.require = function() {};
       window.onload = function() {
         document.getElementById("ua").innerHTML = window.navigator.userAgent;
-        window.audioContext = new AudioContext();
         mocha.run();
       };
       mocha.setup("bdd");
@@ -27,6 +21,7 @@
       <h1>web-audio-api-shim</h1>
       <h2 id="ua" style="font-size:0.6em"></h2>
     </div>
+    <script src="bootstrap.js"></script>
     <script src="AnalyserNode/getFloatTimeDomainData.js"></script>
     <script src="AudioBuffer/copyFromChannel.js"></script>
     <script src="AudioBuffer/copyToChannel.js"></script>
@@ -36,7 +31,6 @@
     <script src="AudioContext/close.js"></script>
     <script src="AudioContext/resume.js"></script>
     <script src="AudioContext/suspend.js"></script>
-    <script src="AudioContext/state.js"></script>
     <script src="OfflineAudioContext/startRendering.js"></script>
     <script src="AudioNode/disconnect.js"></script>
   </body>

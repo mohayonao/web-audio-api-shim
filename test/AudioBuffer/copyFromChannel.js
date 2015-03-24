@@ -2,14 +2,11 @@
   "use strict";
 
   require("../bootstrap");
+  require("../../src/AudioBuffer/copyFromChannel");
 
   describe("AudioBuffer.prototype.copyFromChannel", function() {
-    var context;
-    if (!/\[native code\]/.test(global.AudioBuffer.prototype.copyFromChannel)) {
-      context = "shim";
-    } else {
-      context = "native";
-    }
+    var context = global.getShimType(global.AudioBuffer.prototype.copyFromChannel);
+
     describe(context, function() {
       function writeNoise(destination) {
         for (var i = 0; i < destination.length; i++) {

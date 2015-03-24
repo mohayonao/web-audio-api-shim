@@ -1,6 +1,8 @@
 "use strict";
 
-if (!global.AudioBuffer.prototype.copyFromChannel) {
+let AudioBuffer = global.AudioBuffer;
+
+if (AudioBuffer && !AudioBuffer.prototype.hasOwnProperty("copyFromChannel")) {
   //// ### AudioBuffer.prototype.copyFromChannel
   //// The `copyFromChannel` method copies the samples from the specified channel of the **`AudioBuffer`** to the `destination` array.
   ////
@@ -14,7 +16,7 @@ if (!global.AudioBuffer.prototype.copyFromChannel) {
   ////
   //// #### Return
   //// - `void`
-  global.AudioBuffer.prototype.copyFromChannel = function(destination, channelNumber, startInChannel) {
+  AudioBuffer.prototype.copyFromChannel = function(destination, channelNumber, startInChannel) {
     let source = this.getChannelData(channelNumber|0).subarray(startInChannel|0);
     destination.set(source.subarray(0, Math.min(source.length, destination.length)));
   };

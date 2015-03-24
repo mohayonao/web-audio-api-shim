@@ -5,12 +5,8 @@
   require("../../src/OfflineAudioContext/startRendering");
 
   describe("OfflineAudioContext.prototype.startRendering", function() {
-    var context;
-    if (!!global.OfflineAudioContext.prototype.startRendering.original) {
-      context = "shim";
-    } else {
-      context = "native";
-    }
+    var context = global.getShimType(global.OfflineAudioContext.prototype.startRendering);
+
     describe(context, function() {
       describe("(): Promise<AudioBuffer>", function() {
         it("should resolve with an AudioBuffer", function() {

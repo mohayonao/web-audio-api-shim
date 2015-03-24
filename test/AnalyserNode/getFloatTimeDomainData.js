@@ -5,12 +5,8 @@
   require("../../src/AnalyserNode/getFloatTimeDomainData");
 
   describe("AnalyserNode.prototype.getFloatTimeDomainData", function() {
-    var context;
-    if (!/\[native code\]/.test(global.AnalyserNode.prototype.getFloatTimeDomainData)) {
-      context = "shim";
-    } else {
-      context = "native";
-    }
+    var context = global.getShimType(global.AnalyserNode.prototype.getFloatTimeDomainData);
+
     describe(context, function() {
       describe("(array: Float32Array): void", function() {
         it("works", function(done) {
