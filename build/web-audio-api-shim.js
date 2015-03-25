@@ -281,17 +281,75 @@ if (OfflineAudioContext) {
   }
 
   if (!isSelectiveDisconnection) {
-    var disconnect = AudioNode.prototype.disconnect;
-    //// ### AudioNode.prototype.disconnect
-    //// Disconnects connections from **`AudioNode`**
-    ////
-    //// #### Parameters
-    //// - _none_
-    ////
-    //// #### Return
-    //// - `void`
-    AudioNode.prototype.disconnect = disconnect;
-    AudioNode.prototype.disconnect.original = null;
+    (function () {
+      var connect = AudioNode.prototype.connect;
+      var disconnect = AudioNode.prototype.disconnect;
+      //// ### AudioNode.prototype.disconnect
+      //// Disconnects connections from **`AudioNode`**
+      ////
+      //// #### Parameters
+      //// - _none_
+      ////
+      //// #### Return
+      //// - `void`
+      AudioNode.prototype.disconnect = function () {
+        var _this = this;
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        this._shim$connections = this._shim$connections || [];
+
+        var cond = undefined;
+
+        if (args.length === 0) {
+          cond = function () {
+            return false;
+          };
+        } else if (args.length === 1 && typeof args[0] === "number") {
+          cond = function (connection) {
+            return args[0] !== connection[1];
+          };
+        } else {
+          cond = function (connection) {
+            return args.some(function (value, index) {
+              return value !== connection[index];
+            });
+          };
+        }
+
+        var remain = this._shim$connections.filter(cond);
+
+        for (var ch = 0, chmax = this.numberOfOutputs; ch < chmax; ch++) {
+          disconnect.call(this, ch);
+        }
+
+        remain.forEach(function (connection) {
+          connect.call(_this, connection[0], connection[1], connection[2]);
+        });
+
+        this._shim$connections = remain;
+      };
+      AudioNode.prototype.disconnect.original = disconnect;
+
+      AudioNode.prototype.connect = function (destination) {
+        var output = arguments[1] === undefined ? 0 : arguments[1];
+        var input = arguments[2] === undefined ? 0 : arguments[2];
+
+        this._shim$connections = this._shim$connections || [];
+
+        if (destination instanceof AudioNode) {
+          connect.call(this, destination, output, input);
+        } else {
+          connect.call(this, destination, output);
+          input = 0;
+        }
+
+        this._shim$connections.push([destination, output, input]);
+      };
+      AudioNode.prototype.connect.original = connect;
+    })();
   }
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
