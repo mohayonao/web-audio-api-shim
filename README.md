@@ -24,13 +24,13 @@ downloads:
 - `AudioContext#createStereoPanner`
 - `AudioContext#decodeAudioData`
 - `OffelinAudioContext#startRendering`
+- `AudioNode#disconnect`
 
 ## TODO
 - `AudioContext#close`
 - `AudioContext#resume`
 - `AudioContext#suspend`
 - `AudioContext#state`
-- `AudioNode#disconnect`
 
 ## Native API Supports
 |                        | Shim | Chrome | Firefox | Opera  | Safari |
@@ -46,7 +46,7 @@ downloads:
 | resume                 | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
 | state                  | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
 | startRendering         | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
-| disconnect             | :x:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
+| disconnect             | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
 
 ## Online test suites
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)
