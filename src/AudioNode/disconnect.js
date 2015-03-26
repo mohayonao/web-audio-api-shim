@@ -16,6 +16,52 @@ if (OfflineAudioContext) {
   if (!isSelectiveDisconnection) {
     let connect = AudioNode.prototype.connect;
     let disconnect = AudioNode.prototype.disconnect;
+
+    let match = (args, connection) => {
+      for (let i = 0, imax = args.length; i < imax; i++) {
+        if (args[i] !== connection[i]) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    let disconnectAll = (node) => {
+      for (let ch = 0, chmax = node.numberOfOutputs; ch < chmax; ch++) {
+        disconnect.call(node, ch);
+      }
+      node._shim$connections = [];
+    };
+
+    let disconnectChannel = (node, channel) => {
+      disconnect.call(node, channel);
+      node._shim$connections = node._shim$connections.filter(connection => connection[1] !== channel);
+    };
+
+    let disconnectSelect = (node, args) => {
+      let remain = [];
+      let hasDestination = false;
+
+      node._shim$connections.forEach((connection) => {
+        hasDestination = hasDestination || (args[0] === connection[0]);
+        if (!match(args, connection)) {
+          remain.push(connection);
+        }
+      });
+
+      if (!hasDestination) {
+        throw new Error("Failed to execute 'disconnect' on 'AudioNode': the given destination is not connected.");
+      }
+
+      disconnectAll(node);
+
+      remain.forEach((connection) => {
+        connect.call(node, connection[0], connection[1], connection[2]);
+      });
+
+      node._shim$connections = remain;
+    };
+
     //// ### AudioNode.prototype.disconnect
     //// Disconnects connections from **`AudioNode`**
     ////
@@ -27,27 +73,13 @@ if (OfflineAudioContext) {
     AudioNode.prototype.disconnect = function(...args) {
       this._shim$connections = this._shim$connections || [];
 
-      let cond;
-
       if (args.length === 0) {
-        cond = () => false;
+        disconnectAll(this);
       } else if (args.length === 1 && typeof args[0] === "number") {
-        cond = connection => args[0] !== connection[1];
+        disconnectChannel(this, args[0]);
       } else {
-        cond = connection => args.some((value, index) => value !== connection[index]);
+        disconnectSelect(this, args);
       }
-
-      let remain = this._shim$connections.filter(cond);
-
-      for (let ch = 0, chmax = this.numberOfOutputs; ch < chmax; ch++) {
-        disconnect.call(this, ch);
-      }
-
-      remain.forEach((connection) => {
-        connect.call(this, connection[0], connection[1], connection[2]);
-      });
-
-      this._shim$connections = remain;
     };
     AudioNode.prototype.disconnect.original = disconnect;
 

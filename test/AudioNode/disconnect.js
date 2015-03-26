@@ -229,6 +229,13 @@
             _.splitter.disconnect(_.merger);
           }, 0.1875, done);
         });
+        it("should throw an error when given destination is not connected", function() {
+          var gain = audioContext.createGain();
+
+          assert.throws(function() {
+            gain.disconnect(audioContext.destination);
+          }, Error, "should throw an error");
+        });
       });
       describe("(destination: AudioNode|AudioParam, output: number): void", function() {
         // +--------------------+
