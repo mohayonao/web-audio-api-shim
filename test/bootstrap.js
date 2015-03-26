@@ -4,6 +4,21 @@ global.assert = function(value, message) {
     throw new Error(message);
   }
 };
+global.assert.throws = function(block, expected, message) {
+  var actual;
+
+  try {
+    block();
+  } catch (e) {
+    actual = e;
+  }
+
+  if (actual instanceof expected) {
+    return;
+  }
+
+  throw new Error(message);
+};
 global.audioContext = new AudioContext();
 global.getShimType = function(func) {
   if (func == null) {

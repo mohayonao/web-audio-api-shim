@@ -284,52 +284,115 @@ if (OfflineAudioContext) {
     (function () {
       var connect = AudioNode.prototype.connect;
       var disconnect = AudioNode.prototype.disconnect;
+
+      var match = function (args, connection) {
+        for (var i = 0, imax = args.length; i < imax; i++) {
+          if (args[i] !== connection[i]) {
+            return false;
+          }
+        }
+        return true;
+      };
+
+      var disconnectAll = function (node) {
+        for (var ch = 0, chmax = node.numberOfOutputs; ch < chmax; ch++) {
+          disconnect.call(node, ch);
+        }
+        node._shim$connections = [];
+      };
+
+      var disconnectChannel = function (node, channel) {
+        disconnect.call(node, channel);
+        node._shim$connections = node._shim$connections.filter(function (connection) {
+          return connection[1] !== channel;
+        });
+      };
+
+      var disconnectSelect = function (node, args) {
+        var remain = [];
+        var hasDestination = false;
+
+        node._shim$connections.forEach(function (connection) {
+          hasDestination = hasDestination || args[0] === connection[0];
+          if (!match(args, connection)) {
+            remain.push(connection);
+          }
+        });
+
+        if (!hasDestination) {
+          throw new Error("Failed to execute 'disconnect' on 'AudioNode': the given destination is not connected.");
+        }
+
+        disconnectAll(node);
+
+        remain.forEach(function (connection) {
+          connect.call(node, connection[0], connection[1], connection[2]);
+        });
+
+        node._shim$connections = remain;
+      };
+
       //// ### AudioNode.prototype.disconnect
-      //// Disconnects connections from **`AudioNode`**
+      //// Disconnects all outgoing connections from **`AudioNode`**.
       ////
       //// #### Parameters
       //// - _none_
       ////
       //// #### Return
       //// - `void`
+      ////
+      //// ### AudioNode.prototype.disconnect
+      //// #### Parameters
+      //// - `output: number`
+      ////   - This parameter is an index describing which output of the AudioNode to disconnect.
+      ////
+      //// #### Return
+      //// - `void`
+      ////
+      //// ### AudioNode.prototype.disconnect
+      //// #### Parameters
+      //// - `destination: AudioNode|AudioParam`
+      ////   - The destination parameter is the AudioNode/AudioParam to disconnect.
+      ////
+      //// #### Return
+      //// - `void`
+      ////
+      //// ### AudioNode.prototype.disconnect
+      //// #### Parameters
+      //// - `destination: AudioNode|AudioParam`
+      ////   - The destination parameter is the AudioNode/AudioParam to disconnect.
+      //// - `output: number`
+      ////   - The output parameter is an index describing which output of the AudioNode from which to disconnect.
+      ////
+      //// #### Return
+      //// - `void`
+      ////
+      //// ### AudioNode.prototype.disconnect
+      //// #### Parameters
+      //// - `destination: AudioNode`
+      ////   - The destination parameter is the AudioNode to disconnect.
+      //// - `output: number`
+      ////   - The output parameter is an index describing which output of the AudioNode from which to disconnect.
+      //// - `input: number`
+      ////    - The input parameter is an index describing which input of the destination AudioNode to disconnect.
+      ////
+      //// #### Return
+      //// - `void`
+      ////
       AudioNode.prototype.disconnect = function () {
-        var _this = this;
-
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
 
         this._shim$connections = this._shim$connections || [];
 
-        var cond = undefined;
-
         if (args.length === 0) {
-          cond = function () {
-            return false;
-          };
+          disconnectAll(this);
         } else if (args.length === 1 && typeof args[0] === "number") {
-          cond = function (connection) {
-            return args[0] !== connection[1];
-          };
+          disconnectChannel(this, args[0]);
         } else {
-          cond = function (connection) {
-            return args.some(function (value, index) {
-              return value !== connection[index];
-            });
-          };
+          disconnectSelect(this, args);
         }
-
-        var remain = this._shim$connections.filter(cond);
-
-        for (var ch = 0, chmax = this.numberOfOutputs; ch < chmax; ch++) {
-          disconnect.call(this, ch);
-        }
-
-        remain.forEach(function (connection) {
-          connect.call(_this, connection[0], connection[1], connection[2]);
-        });
-
-        this._shim$connections = remain;
       };
       AudioNode.prototype.disconnect.original = disconnect;
 
