@@ -63,13 +63,52 @@ if (OfflineAudioContext) {
     };
 
     //// ### AudioNode.prototype.disconnect
-    //// Disconnects connections from **`AudioNode`**
+    //// Disconnects all outgoing connections from **`AudioNode`**.
     ////
     //// #### Parameters
     //// - _none_
     ////
     //// #### Return
     //// - `void`
+    ////
+    //// ### AudioNode.prototype.disconnect
+    //// #### Parameters
+    //// - `output: number`
+    ////   - This parameter is an index describing which output of the AudioNode to disconnect.
+    ////
+    //// #### Return
+    //// - `void`
+    ////
+    //// ### AudioNode.prototype.disconnect
+    //// #### Parameters
+    //// - `destination: AudioNode|AudioParam`
+    ////   - The destination parameter is the AudioNode/AudioParam to disconnect.
+    ////
+    //// #### Return
+    //// - `void`
+    ////
+    //// ### AudioNode.prototype.disconnect
+    //// #### Parameters
+    //// - `destination: AudioNode|AudioParam`
+    ////   - The destination parameter is the AudioNode/AudioParam to disconnect.
+    //// - `output: number`
+    ////   - The output parameter is an index describing which output of the AudioNode from which to disconnect.
+    ////
+    //// #### Return
+    //// - `void`
+    ////
+    //// ### AudioNode.prototype.disconnect
+    //// #### Parameters
+    //// - `destination: AudioNode`
+    ////   - The destination parameter is the AudioNode to disconnect.
+    //// - `output: number`
+    ////   - The output parameter is an index describing which output of the AudioNode from which to disconnect.
+    //// - `input: number`
+    ////    - The input parameter is an index describing which input of the destination AudioNode to disconnect.
+    ////
+    //// #### Return
+    //// - `void`
+    ////
     AudioNode.prototype.disconnect = function(...args) {
       this._shim$connections = this._shim$connections || [];
 
