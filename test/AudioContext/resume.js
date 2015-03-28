@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AudioContext/resume");
-
   describe("AudioContext.prototype.resume", function() {
     var context = global.getShimType(global.AudioContext.prototype.resume);
 

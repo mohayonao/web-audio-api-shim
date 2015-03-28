@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AudioContext/createAudioWorker");
-
   describe("AudioContext.prototype.createAudioWorker", function() {
     var context = global.getShimType(global.AudioContext.prototype.createAudioWorker);
 

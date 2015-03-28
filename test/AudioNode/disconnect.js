@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AudioNode/disconnect");
-
   describe("AudioNode.prototype.disconnect", function() {
     var context = global.getShimType(global.AudioNode.prototype.disconnect);
     var _ = null;

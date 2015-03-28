@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AudioBuffer/copyToChannel");
-
   describe("AudioBuffer.prototype.copyToChannel", function() {
     var context = global.getShimType(global.AudioBuffer.prototype.copyToChannel);
 

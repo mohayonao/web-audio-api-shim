@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AnalyserNode/getFloatTimeDomainData");
-
   describe("AnalyserNode.prototype.getFloatTimeDomainData", function() {
     var context = global.getShimType(global.AnalyserNode.prototype.getFloatTimeDomainData);
     var _ = null;

@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AudioContext/decodeAudioData");
-
   describe("AudioContext.prototype.decodeAudioData", function() {
     var context = global.getShimType(global.AudioContext.prototype.decodeAudioData);
 

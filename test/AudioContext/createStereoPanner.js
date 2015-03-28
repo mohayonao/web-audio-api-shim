@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AudioContext/createStereoPanner");
-
   describe("AudioContext.prototype.createStereoPanner", function() {
     var context = global.getShimType(global.AudioContext.prototype.createStereoPanner);
 

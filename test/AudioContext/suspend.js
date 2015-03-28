@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AudioContext/suspend");
-
   describe("AudioContext.prototype.suspend", function() {
     var context = global.getShimType(global.AudioContext.prototype.suspend);
 

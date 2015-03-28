@@ -2,7 +2,11 @@
 
 let AnalyserNode = global.AnalyserNode;
 
-if (AnalyserNode && !AnalyserNode.prototype.hasOwnProperty("getFloatTimeDomainData")) {
+function installGetFloatTimeDomainData() {
+  if (AnalyserNode.prototype.hasOwnProperty("getFloatTimeDomainData")) {
+    return;
+  }
+
   let uint8 = new Uint8Array(2048);
 
   //// ### AnalyserNode.prototype.getFloatTimeDomainData
@@ -20,4 +24,8 @@ if (AnalyserNode && !AnalyserNode.prototype.hasOwnProperty("getFloatTimeDomainDa
       array[i] = (uint8[i] - 128) * 0.0078125;
     }
   };
+}
+
+export function install() {
+  installGetFloatTimeDomainData();
 }

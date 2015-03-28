@@ -1,9 +1,6 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/OfflineAudioContext/startRendering");
-
   describe("OfflineAudioContext.prototype.startRendering", function() {
     var context = global.getShimType(global.OfflineAudioContext.prototype.startRendering);
 
