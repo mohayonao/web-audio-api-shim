@@ -11,18 +11,18 @@
     "stereo-panner-node": "^0.1.4"
   },
   "devDependencies": {
-    "babel": "^4.7.16",
-    "babelify": "^5.0.4",
-    "browserify": "^9.0.3",
+    "babel": "^5.0.2",
+    "babelify": "^6.0.0",
+    "browserify": "^9.0.6",
     "jshint": "^2.6.3",
     "jshint-stylish": "^1.0.1",
     "karma": "^0.12.31",
-    "karma-browserify": "^4.0.0",
+    "karma-browserify": "^4.1.2",
     "karma-chrome-launcher": "^0.1.7",
     "karma-firefox-launcher": "^0.1.4",
     "karma-mocha": "^0.1.10",
     "mocha": "^2.2.1",
-    "uglify-js": "^2.4.17"
+    "uglify-js": "^2.4.19"
   },
   "files": [
     "package.json",
