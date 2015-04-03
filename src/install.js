@@ -14,7 +14,6 @@ export function install() {
 
   require("./AnalyserNode").install();
   require("./AudioBuffer").install();
-  require("./AudioContext").install();
   require("./AudioNode").install();
-  require("./OfflineAudioContext").install();
+  require("./AudioContext").install();
 }
