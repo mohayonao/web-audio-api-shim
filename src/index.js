@@ -1,7 +1,5 @@
 "use strict";
 
-import "./AnalyserNode";
-import "./AudioBuffer";
-import "./AudioContext";
-import "./AudioNode";
-import "./OfflineAudioContext";
+import { install } from "./install";
+
+install();

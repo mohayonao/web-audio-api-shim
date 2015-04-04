@@ -1,26 +1,20 @@
 (function() {
   "use strict";
 
-  require("../bootstrap");
-  require("../../src/AudioContext/suspend");
-
   describe("AudioContext.prototype.suspend", function() {
-    var context = global.getShimType(global.AudioContext.prototype.suspend);
-
-    describe.skip(context, function() {
-      describe("(): Promise<void>", function() {
-        it("should resolve", function() {
-        });
+    describe.skip("(): Promise<void>", function() {
+      it("should resolve", function() {
       });
     });
   });
 
   describe("OfflineAudioContext.prototype.suspend", function() {
-    var context = global.getShimType(global.OfflineAudioContext.prototype.suspend);
+    describe("(): Promise<void>", function() {
+      it("should reject", function() {
+        var audioContext = new global.OfflineAudioContext(1, 100, 44100);
 
-    describe.skip(context, function() {
-      describe("(): Promise<void>", function() {
-        it("should reject", function() {
+        return audioContext.suspend().catch(function(e) {
+          assert(e instanceof Error);
         });
       });
     });
