@@ -2,7 +2,6 @@
   "use strict";
 
   describe("AnalyserNode.prototype.getFloatTimeDomainData", function() {
-    var context = global.getShimType(global.AnalyserNode.prototype.getFloatTimeDomainData);
     var _ = null;
 
     before(function() {
@@ -56,16 +55,14 @@
       _ = null;
     });
 
-    describe(context, function() {
-      describe("(array: Float32Array): void", function() {
-        it("should copy the current time-domain (waveform) data into the passed floating-point array", function(done) {
-          expect(function(array) {
-            assert(array[0] !== array[1]);
-            assert(array[1] !== array[2]);
-            assert(array[2] !== array[3]);
-            assert(array[0] === array[4]);
-          }, done);
-        });
+    describe("(array: Float32Array): void", function() {
+      it("should copy the current time-domain (waveform) data into the passed floating-point array", function(done) {
+        expect(function(array) {
+          assert(array[0] !== array[1]);
+          assert(array[1] !== array[2]);
+          assert(array[2] !== array[3]);
+          assert(array[0] === array[4]);
+        }, done);
       });
     });
   });

@@ -2,7 +2,6 @@
   "use strict";
 
   describe("AudioNode.prototype.disconnect", function() {
-    var context = global.getShimType(global.AudioNode.prototype.disconnect);
     var _ = null;
 
     // +--------------------+
@@ -133,180 +132,178 @@
       _ = null;
     });
 
-    describe(context, function() {
-      describe("(): void", function() {
-        // +--------------------+
-        // | DC [ 0.125, 0.25 ] |
-        // +--------------------+
-        //   |
-        // +---------------------------+
-        // | ChannelSplitterNode       |
-        // +---------------------------+
-        //   | 0.125                 | 0.25
-        // ============================= disconnect
-        //
-        //                         +-----------+
-        //                         | GainNode  |
-        //                         | gain: 0.5 |
-        //                         +-----------+
-        //                           | 0
-        //   +-----------------------+
-        //   |                       |
-        // +---------------------------+
-        // | ChannelMergerNode         |
-        // +---------------------------+
-        //   | 0                     | 0
-        it("should disconnect all connections", function(done) {
-          expect(function(_) {
-            _.splitter.disconnect();
-          }, 0, done);
-        });
+    describe("(): void", function() {
+      // +--------------------+
+      // | DC [ 0.125, 0.25 ] |
+      // +--------------------+
+      //   |
+      // +---------------------------+
+      // | ChannelSplitterNode       |
+      // +---------------------------+
+      //   | 0.125                 | 0.25
+      // ============================= disconnect
+      //
+      //                         +-----------+
+      //                         | GainNode  |
+      //                         | gain: 0.5 |
+      //                         +-----------+
+      //                           | 0
+      //   +-----------------------+
+      //   |                       |
+      // +---------------------------+
+      // | ChannelMergerNode         |
+      // +---------------------------+
+      //   | 0                     | 0
+      it("should disconnect all connections", function(done) {
+        expect(function(_) {
+          _.splitter.disconnect();
+        }, 0, done);
       });
-      describe("(output: number): void", function() {
-        // +--------------------+
-        // | DC [ 0.125, 0.25 ] |
-        // +--------------------+
-        //   |
-        // +---------------------------+
-        // | ChannelSplitterNode       |
-        // +---------------------------+
-        //   | 0.125                 | 0.25
-        //   |                     ===== disconnect
-        //   |
-        //   +---------------------->+
-        //   |                       | 0.125
-        //   |                     +-----------+
-        //   +-------------+       | GainNode  |
-        //   |             |       | gain: 0.5 |
-        //   |             |       +-----------+
-        //   |             |         | 0.0625
-        //   +<------------|---------+
-        //   | 0.1875      |         |
-        //   |             |         |
-        //   |             +-------->+
-        //   |                       | 0.1875
-        // +---------------------------+
-        // | ChannelMergerNode         |
-        // +---------------------------+
-        //   | 0.1875                | 0.1875
-        it("should disconnect the specified output connections", function(done) {
-          expect(function(_) {
-            _.splitter.disconnect(1);
-          }, 0.1875, done);
-        });
+    });
+    describe("(output: number): void", function() {
+      // +--------------------+
+      // | DC [ 0.125, 0.25 ] |
+      // +--------------------+
+      //   |
+      // +---------------------------+
+      // | ChannelSplitterNode       |
+      // +---------------------------+
+      //   | 0.125                 | 0.25
+      //   |                     ===== disconnect
+      //   |
+      //   +---------------------->+
+      //   |                       | 0.125
+      //   |                     +-----------+
+      //   +-------------+       | GainNode  |
+      //   |             |       | gain: 0.5 |
+      //   |             |       +-----------+
+      //   |             |         | 0.0625
+      //   +<------------|---------+
+      //   | 0.1875      |         |
+      //   |             |         |
+      //   |             +-------->+
+      //   |                       | 0.1875
+      // +---------------------------+
+      // | ChannelMergerNode         |
+      // +---------------------------+
+      //   | 0.1875                | 0.1875
+      it("should disconnect the specified output connections", function(done) {
+        expect(function(_) {
+          _.splitter.disconnect(1);
+        }, 0.1875, done);
       });
-      describe("(destination: AudioNode|AudioParam): void", function() {
-        // +--------------------+
-        // | DC [ 0.125, 0.25 ] |
-        // +--------------------+
-        //   |
-        // +---------------------------+
-        // | ChannelSplitterNode       |
-        // +---------------------------+
-        //   | 0.125                 | 0.25
-        //   +-------------+         |
-        //   |             |         |
-        //   |        +----|---------+
-        //   |        |    |         |
-        //   |        |    +-------->+
-        //   |        |              | 0.375
-        // ==============          +-----------+
-        //   disconnect            | GainNode  |
-        //                         | gain: 0.5 |
-        //                         +-----------+
-        //                           | 0.1875
-        //   +<----------------------+
-        //   |                       | 0.1875
-        // +---------------------------+
-        // | ChannelMergerNode         |
-        // +---------------------------+
-        //   | 0.1875                | 0.1875
-        it("should disconnect all connections which connect to the destination", function(done) {
-          expect(function(_) {
-            _.splitter.disconnect(_.merger);
-          }, 0.1875, done);
-        });
-        it("should throw an error when given destination is not connected", function() {
-          var gain = audioContext.createGain();
+    });
+    describe("(destination: AudioNode|AudioParam): void", function() {
+      // +--------------------+
+      // | DC [ 0.125, 0.25 ] |
+      // +--------------------+
+      //   |
+      // +---------------------------+
+      // | ChannelSplitterNode       |
+      // +---------------------------+
+      //   | 0.125                 | 0.25
+      //   +-------------+         |
+      //   |             |         |
+      //   |        +----|---------+
+      //   |        |    |         |
+      //   |        |    +-------->+
+      //   |        |              | 0.375
+      // ==============          +-----------+
+      //   disconnect            | GainNode  |
+      //                         | gain: 0.5 |
+      //                         +-----------+
+      //                           | 0.1875
+      //   +<----------------------+
+      //   |                       | 0.1875
+      // +---------------------------+
+      // | ChannelMergerNode         |
+      // +---------------------------+
+      //   | 0.1875                | 0.1875
+      it("should disconnect all connections which connect to the destination", function(done) {
+        expect(function(_) {
+          _.splitter.disconnect(_.merger);
+        }, 0.1875, done);
+      });
+      it("should throw an error when given destination is not connected", function() {
+        var gain = audioContext.createGain();
 
-          assert.throws(function() {
-            gain.disconnect(audioContext.destination);
-          }, Error, "should throw an error");
-        });
+        assert.throws(function() {
+          gain.disconnect(audioContext.destination);
+        }, Error, "should throw an error");
       });
-      describe("(destination: AudioNode|AudioParam, output: number): void", function() {
-        // +--------------------+
-        // | DC [ 0.125, 0.25 ] |
-        // +--------------------+
-        //   |
-        // +---------------------------+
-        // | ChannelSplitterNode       |
-        // +---------------------------+
-        //   | 0.125                 | 0.25
-        //   +-------------+         |
-        //   |             |         |
-        //   |        +----|---------+
-        //   |        |    |         |
-        //   |        |    +-------->+
-        //   |        |              | 0.375
-        //   |        |            +-----------+
-        //   +-------------+       | GainNode  |
-        //   |        |    |       | gain: 0.5 |
-        //   |        |    |       +-----------+
-        //   |        |    |         | 0.1875
-        //   +<-------|----|---------+
-        //   | 0.3125 |    |         |
-        //   |      =====  |         |
-        //   |             |         |
-        //   |             +-------->+
-        //   |                       | 0.5625
-        // +---------------------------+
-        // | ChannelMergerNode         |
-        // +---------------------------+
-        //   | 0.3125                | 0.3125
-        it("should disconnect the specified output connections which connect to the destination", function(done) {
-          expect(function(_) {
-            _.splitter.disconnect(_.merger, 1);
-          }, 0.3125, done);
-        });
+    });
+    describe("(destination: AudioNode|AudioParam, output: number): void", function() {
+      // +--------------------+
+      // | DC [ 0.125, 0.25 ] |
+      // +--------------------+
+      //   |
+      // +---------------------------+
+      // | ChannelSplitterNode       |
+      // +---------------------------+
+      //   | 0.125                 | 0.25
+      //   +-------------+         |
+      //   |             |         |
+      //   |        +----|---------+
+      //   |        |    |         |
+      //   |        |    +-------->+
+      //   |        |              | 0.375
+      //   |        |            +-----------+
+      //   +-------------+       | GainNode  |
+      //   |        |    |       | gain: 0.5 |
+      //   |        |    |       +-----------+
+      //   |        |    |         | 0.1875
+      //   +<-------|----|---------+
+      //   | 0.3125 |    |         |
+      //   |      =====  |         |
+      //   |             |         |
+      //   |             +-------->+
+      //   |                       | 0.5625
+      // +---------------------------+
+      // | ChannelMergerNode         |
+      // +---------------------------+
+      //   | 0.3125                | 0.3125
+      it("should disconnect the specified output connections which connect to the destination", function(done) {
+        expect(function(_) {
+          _.splitter.disconnect(_.merger, 1);
+        }, 0.3125, done);
       });
-      describe("destination: AudioNode, output: number, input: numebr): void", function() {
-        // +--------------------+
-        // | DC [ 0.125, 0.25 ] |
-        // +--------------------+
-        //   |
-        // +---------------------------+
-        // | ChannelSplitterNode       |
-        // +---------------------------+
-        //   | 0.125                 | 0.25
-        //   +-------------+         |
-        //   |             |         |
-        //   |        +----|---------+
-        //   |        |    |         |
-        //   |        |    +-------->+
-        //   |        |              | 0.375
-        //   |        |            +-----------+
-        //   +-------------+       | GainNode  |
-        //   |        |    |       | gain: 0.5 |
-        //   |        |    |       +-----------+
-        //   |        |    |         | 0.1875
-        //   +<-------|----|---------+
-        //   | 0.3125 |    |         |
-        //   |        +----|----||   |
-        //   |        |    |         |
-        //   +<-------+    |         |
-        //   | 0.5625      |         |
-        //   |             +-------->+
-        //   |                       | 0.3125
-        // +---------------------------+
-        // | ChannelMergerNode         |
-        // +---------------------------+
-        //   | 0.5625                | 0.3125
-        it("should disconnect the specified output connections which connect to the destination input", function(done) {
-          expect(function(_) {
-            _.splitter.disconnect(_.merger, 1, 1);
-          }, (0.5625 + 0.3125) / 2, done);
-        });
+    });
+    describe("destination: AudioNode, output: number, input: numebr): void", function() {
+      // +--------------------+
+      // | DC [ 0.125, 0.25 ] |
+      // +--------------------+
+      //   |
+      // +---------------------------+
+      // | ChannelSplitterNode       |
+      // +---------------------------+
+      //   | 0.125                 | 0.25
+      //   +-------------+         |
+      //   |             |         |
+      //   |        +----|---------+
+      //   |        |    |         |
+      //   |        |    +-------->+
+      //   |        |              | 0.375
+      //   |        |            +-----------+
+      //   +-------------+       | GainNode  |
+      //   |        |    |       | gain: 0.5 |
+      //   |        |    |       +-----------+
+      //   |        |    |         | 0.1875
+      //   +<-------|----|---------+
+      //   | 0.3125 |    |         |
+      //   |        +----|----||   |
+      //   |        |    |         |
+      //   +<-------+    |         |
+      //   | 0.5625      |         |
+      //   |             +-------->+
+      //   |                       | 0.3125
+      // +---------------------------+
+      // | ChannelMergerNode         |
+      // +---------------------------+
+      //   | 0.5625                | 0.3125
+      it("should disconnect the specified output connections which connect to the destination input", function(done) {
+        expect(function(_) {
+          _.splitter.disconnect(_.merger, 1, 1);
+        }, (0.5625 + 0.3125) / 2, done);
       });
     });
   });
