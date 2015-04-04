@@ -41,15 +41,16 @@ downloads:
 | createAudioWorker      | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
 | createStereoPanner     | :o:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
 | decodeAudioData        | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
-| close                  | :x:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
-| suspend                | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
-| resume                 | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
-| state                  | :x:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
+| close                  | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
+| suspend                | :o:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
+| resume                 | :o:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
+| state                  | :o:  | :o: 41 | :x: 36  | :o: 28 | :x: 8  |
 | startRendering         | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
 | disconnect             | :o:  | :x: 41 | :x: 36  | :x: 28 | :x: 8  |
 
 ## Online test suites
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)
+- [check implementations for this browser](http://mohayonao.github.io/web-audio-api-shim/test/impl.html)
 
 ## License
 - MIT
