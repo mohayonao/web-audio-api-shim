@@ -23,14 +23,11 @@ downloads:
 - `AudioContext#createAudioWorker`
 - `AudioContext#createStereoPanner`
 - `AudioContext#decodeAudioData`
-- `OffelinAudioContext#startRendering`
-- `AudioNode#disconnect`
-
-## TODO
 - `AudioContext#close`
 - `AudioContext#resume`
 - `AudioContext#suspend`
-- `AudioContext#state`
+- `OffelinAudioContext#startRendering`
+- `AudioNode#disconnect`
 
 ## Native API Supports
 |                        | Shim | Chrome | Firefox | Opera  | Safari |
@@ -44,7 +41,6 @@ downloads:
 | close                  | :o:  | :x: 41 | :x: 37  | :x: 28 | :x: 8  |
 | suspend                | :o:  | :o: 41 | :x: 37  | :o: 28 | :x: 8  |
 | resume                 | :o:  | :o: 41 | :x: 37  | :o: 28 | :x: 8  |
-| state                  | :o:  | :o: 41 | :x: 37  | :o: 28 | :x: 8  |
 | startRendering         | :o:  | :x: 41 | :o: 37  | :x: 28 | :x: 8  |
 | disconnect             | :o:  | :x: 41 | :x: 37  | :x: 28 | :x: 8  |
 
