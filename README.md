@@ -33,16 +33,16 @@ downloads:
 |                        | Shim | Chrome | Firefox | Opera  | Safari |
 | -----------------------|:----:|:------:|:-------:|:------:|:------:|
 | getFloatTimeDomainData | :o:  | :o: 35 | :o: 35  | :o: 27 | :x: 8  |
-| copyFromChannel        | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
-| copyToChannel          | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
-| createAudioWorker      | :o:  | :x: 41 | :x: 37  | :x: 28 | :x: 8  |
+| copyFromChannel        | :o:  | :x: 42 | :o: 36  | :x: 28 | :x: 8  |
+| copyToChannel          | :o:  | :x: 42 | :o: 36  | :x: 28 | :x: 8  |
+| createAudioWorker      | :o:  | :x: 42 | :x: 37  | :x: 28 | :x: 8  |
 | createStereoPanner     | :o:  | :o: 41 | :o: 37  | :o: 28 | :x: 8  |
-| decodeAudioData        | :o:  | :x: 41 | :o: 36  | :x: 28 | :x: 8  |
-| close                  | :o:  | :x: 41 | :x: 37  | :x: 28 | :x: 8  |
+| decodeAudioData        | :o:  | :x: 42 | :o: 36  | :x: 28 | :x: 8  |
+| close                  | :o:  | :o: 42 | :x: 37  | :x: 28 | :x: 8  |
 | suspend                | :o:  | :o: 41 | :x: 37  | :o: 28 | :x: 8  |
 | resume                 | :o:  | :o: 41 | :x: 37  | :o: 28 | :x: 8  |
-| startRendering         | :o:  | :x: 41 | :o: 37  | :x: 28 | :x: 8  |
-| disconnect             | :o:  | :x: 41 | :x: 37  | :x: 28 | :x: 8  |
+| startRendering         | :o:  | :o: 42 | :o: 37  | :x: 28 | :x: 8  |
+| disconnect             | :o:  | :x: 42 | :x: 37  | :x: 28 | :x: 8  |
 
 ## Online test suites
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)

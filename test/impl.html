@@ -10,6 +10,7 @@
       window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 
       window.onload = function() {
+        document.getElementById("ua").innerHTML = window.navigator.userAgent;
         mocha.run();
       };
       mocha.setup("bdd");
