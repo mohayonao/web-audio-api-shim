@@ -30,19 +30,19 @@ downloads:
 - `AudioNode#disconnect`
 
 ## Native API Supports
-|                        | Shim | Chrome | Firefox | Opera  | Safari |
-| -----------------------|:----:|:------:|:-------:|:------:|:------:|
-| getFloatTimeDomainData | :o:  | :o: 37 | :o: 30  | :o: 22 | :x: 8  |
-| copyFromChannel        | :o:  | :o: 43 | :o: 27  | :o: 30 | :x: 8  |
-| copyToChannel          | :o:  | :o: 43 | :o: 27  | :o: 30 | :x: 8  |
-| createAudioWorker      | :x:  | :x: 43 | :x: 38  | :x: 30 | :x: 8  |
-| createStereoPanner     | :o:  | :o: 41 | :o: 37  | :o: 28 | :x: 8  |
-| decodeAudioData        | :o:  | :x: 43 | :o: 36  | :x: 30 | :x: 8  |
-| close                  | :o:  | :o: 42 | :x: 38  | :o: 29 | :x: 8  |
-| suspend                | :o:  | :o: 41 | :x: 38  | :o: 28 | :x: 8  |
-| resume                 | :o:  | :o: 41 | :x: 38  | :o: 28 | :x: 8  |
-| startRendering         | :o:  | :o: 42 | :o: 37  | :o: 29 | :x: 8  |
-| disconnect             | :o:  | :o: 43 | :x: 38  | :o: 30 | :x: 8  |
+|                        | Shim | Chrome  | Firefox | Opera   | Safari |
+| -----------------------|:----:|:-------:|:-------:|:-------:|:------:|
+| getFloatTimeDomainData | :ok: | :ok: 35 | :ok: 35 | :ok: 27 | :x: 8  |
+| copyFromChannel        | :ok: | :ok: 43 | :ok: 36 | :ok: 30 | :x: 8  |
+| copyToChannel          | :ok: | :ok: 43 | :ok: 36 | :ok: 30 | :x: 8  |
+| createAudioWorker      | :x:  | :x:  43 | :x:  38 | :x:  30 | :x: 8  |
+| createStereoPanner     | :ok: | :ok: 41 | :ok: 37 | :ok: 28 | :x: 8  |
+| decodeAudioData        | :ok: | :x:  43 | :ok: 36 | :x:  30 | :x: 8  |
+| close                  | :ok: | :ok: 42 | :x:  38 | :ok: 29 | :x: 8  |
+| suspend                | :ok: | :ok: 41 | :x:  38 | :ok: 28 | :x: 8  |
+| resume                 | :ok: | :ok: 41 | :x:  38 | :ok: 28 | :x: 8  |
+| startRendering         | :ok: | :ok: 42 | :ok: 37 | :ok: 29 | :x: 8  |
+| disconnect             | :ok: | :ok: 43 | :x:  38 | :ok: 30 | :x: 8  |
 
 ## Online test suites
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)
