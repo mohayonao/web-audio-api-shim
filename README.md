@@ -32,9 +32,9 @@ downloads:
 ## Native API Supports
 |                        | Shim | Chrome  | Firefox | Opera   | Safari |
 | -----------------------|:----:|:-------:|:-------:|:-------:|:------:|
-| getFloatTimeDomainData | :ok: | :ok: 35 | :ok: 35 | :ok: 27 | :x: 8  |
-| copyFromChannel        | :ok: | :ok: 43 | :ok: 36 | :ok: 30 | :x: 8  |
-| copyToChannel          | :ok: | :ok: 43 | :ok: 36 | :ok: 30 | :x: 8  |
+| getFloatTimeDomainData | :ok: | :ok: 37 | :ok: 30 | :ok: 22 | :x: 8  |
+| copyFromChannel        | :ok: | :ok: 43 | :ok: 27 | :ok: 30 | :x: 8  |
+| copyToChannel          | :ok: | :ok: 43 | :ok: 27 | :ok: 30 | :x: 8  |
 | createAudioWorker      | :x:  | :x:  43 | :x:  38 | :x:  30 | :x: 8  |
 | createStereoPanner     | :ok: | :ok: 41 | :ok: 37 | :ok: 28 | :x: 8  |
 | decodeAudioData        | :ok: | :x:  43 | :ok: 36 | :x:  30 | :x: 8  |
