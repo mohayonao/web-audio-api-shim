@@ -1,13 +1,13 @@
-"use strict";
-
 let OriginalAudioContext = global.AudioContext;
 let OriginalOfflineAudioContext = global.OfflineAudioContext;
 let AudioNode = global.AudioNode;
 let EventTarget = global.EventTarget || global.Object.constructor;
 
+function nop() {}
+
 function inherits(ctor, superCtor) {
   ctor.prototype = Object.create(superCtor.prototype, {
-    constructor: { value: ctor, enumerable: false, writable: true, configurable: true }
+    constructor: { value: ctor, enumerable: false, writable: true, configurable: true },
   });
 }
 
@@ -31,27 +31,27 @@ function replaceAudioContext() {
     destination: {
       get: function() {
         return this._.destination;
-      }
+      },
     },
     sampleRate: {
       get: function() {
         return this._.sampleRate;
-      }
+      },
     },
     currentTime: {
       get: function() {
         return this._.currentTime || this._.audioContext.currentTime;
-      }
+      },
     },
     listener: {
       get: function() {
         return this._.audioContext.listener;
-      }
+      },
     },
     state: {
       get: function() {
         return this._.state;
-      }
+      },
     },
     onstatechange: {
       set: function(fn) {
@@ -61,8 +61,8 @@ function replaceAudioContext() {
       },
       get: function() {
         return this._.onstatechange;
-      }
-    }
+      },
+    },
   });
 
   class AudioContext extends BaseAudioContext {
@@ -89,21 +89,24 @@ function replaceAudioContext() {
       return Promise.reject(new Error("cannot suspend a closed AudioContext"));
     }
 
-    let changeState = () => {
+    function changeState() {
       this._.state = "suspended";
       this._.currentTime = this._.audioContext.currentTime;
-    };
+    }
+
     let promise;
 
     if (typeof this._.audioContext === "function") {
       promise = this._.audioContext.suspend();
-      promise.then(changeState);
+      promise.then(() => {
+        changeState.call(this);
+      });
     } else {
       AudioNode.prototype.disconnect.call(this._.destination);
 
       promise = Promise.resolve();
       promise.then(() => {
-        changeState();
+        changeState.call(this);
 
         let e = new global.Event("statechange");
 
@@ -123,21 +126,24 @@ function replaceAudioContext() {
       return Promise.reject(new Error("cannot resume a closed AudioContext"));
     }
 
-    let changeState = () => {
+    function changeState() {
       this._.state = "running";
       this._.currentTime = 0;
-    };
+    }
+
     let promise;
 
     if (typeof this._.audioContext.resume === "function") {
       promise = this._.audioContext.resume();
-      promise.then(changeState);
+      promise.then(() => {
+        changeState.call(this);
+      });
     } else {
       AudioNode.prototype.connect.call(this._.destination, this._.audioContext.destination);
 
       promise = Promise.resolve();
       promise.then(() => {
-        changeState();
+        changeState.call(this);
 
         let e = new global.Event("statechange");
 
@@ -157,16 +163,19 @@ function replaceAudioContext() {
       return Promise.reject(new Error("Cannot close a context that is being closed or has already been closed."));
     }
 
-    let changeState = () => {
+    function changeState() {
       this._.state = "closed";
       this._.currentTime = Infinity;
       this._.sampleRate = 0;
-    };
+    }
+
     let promise;
 
     if (typeof this._.audioContext.close === "function") {
       promise = this._.audioContext.close();
-      promise.then(changeState);
+      promise.then(() => {
+        changeState.call(this);
+      });
     } else {
       if (typeof this._.audioContext.suspend === "function") {
         this._.audioContext.suspend();
@@ -176,7 +185,7 @@ function replaceAudioContext() {
       promise = Promise.resolve();
 
       promise.then(() => {
-        changeState();
+        changeState.call(this);
 
         let e = new global.Event("statechange");
 
@@ -332,7 +341,7 @@ function installCreateAudioWorker() {
     return;
   }
 
-  var AudioWorkerNode = require("audio-worker-node");
+  let AudioWorkerNode = require("audio-worker-node");
 
   //// ### AudioContext.prototype.createAudioWorker
   //// Creates an **`AudioWorkerNode`** and its associated **`AudioWorkerGlobalScope`** for direct audio processing using JavaScript.
@@ -357,7 +366,7 @@ function installCreateStereoPanner() {
     return;
   }
 
-  var StereoPannerNode = require("stereo-panner-node");
+  let StereoPannerNode = require("stereo-panner-node");
 
   //// ### AudioContext.prototype.createStereoPanner
   //// Creates a StereoPannerNode.
@@ -378,9 +387,11 @@ function installDecodeAudioData() {
 
   try {
     let audioData = new Uint8Array(0).buffer;
-    let nop = () => {};
+
     isPromiseBased = !!audioContext.decodeAudioData(audioData, nop);
-  } catch (e) {}
+  } catch (e) {
+    nop(e);
+  }
 
   if (isPromiseBased) {
     return;
@@ -463,7 +474,9 @@ function installStartRendering() {
 
   try {
     isPromiseBased = !!audioContext.startRendering();
-  } catch (e) {}
+  } catch (e) {
+    nop(e);
+  }
 
   if (isPromiseBased) {
     return;
@@ -482,6 +495,7 @@ function installStartRendering() {
   OriginalOfflineAudioContext.prototype.startRendering = function() {
     return new Promise((resolve) => {
       let oncomplete = this.oncomplete;
+
       this.oncomplete = (e) => {
         resolve(e.renderedBuffer);
         if (typeof oncomplete === "function") {
@@ -494,7 +508,7 @@ function installStartRendering() {
   OriginalOfflineAudioContext.prototype.startRendering.original = startRendering;
 }
 
-export function install(){
+export function install() {
   installCreateAudioWorker();
   installCreateStereoPanner();
   installDecodeAudioData();
