@@ -1,5 +1,5 @@
 {
-  "name": "web-audio-api-shim",
+  "name": "@mohayonao/web-audio-api-shim",
   "description": "shim for legacy Web Audio API",
   "version": "0.1.8",
   "author": "Nao Yonamine <mohayonao@gmail.com>",
@@ -7,22 +7,21 @@
     "url": "https://github.com/mohayonao/web-audio-api-shim/issues"
   },
   "dependencies": {
-    "audio-worker-node": "^0.1.2",
-    "stereo-panner-node": "^0.1.4"
+    "stereo-panner-node": "^0.2.0"
   },
   "devDependencies": {
-    "babel": "^5.0.2",
-    "babelify": "^6.0.0",
-    "browserify": "^9.0.6",
-    "jshint": "^2.6.3",
-    "jshint-stylish": "^1.0.1",
-    "karma": "^0.12.31",
-    "karma-browserify": "^4.1.2",
-    "karma-chrome-launcher": "^0.1.7",
-    "karma-firefox-launcher": "^0.1.4",
-    "karma-mocha": "^0.1.10",
-    "mocha": "^2.2.1",
-    "uglify-js": "^2.4.19"
+    "babel": "^5.6.14",
+    "babel-eslint": "^3.1.19",
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.4",
+    "eslint": "^0.24.0",
+    "karma": "^0.12.37",
+    "karma-browserify": "^4.2.1",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-mocha": "^0.2.0",
+    "mocha": "^2.2.5",
+    "uglify-js": "^2.4.23"
   },
   "files": [
     "package.json",
@@ -33,9 +32,8 @@
   "keywords": [
     "webaudioapi"
   ],
-  "licenses": "MIT",
+  "license": "MIT",
   "main": "./lib/index.js",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/mohayonao/web-audio-api-shim.git"
@@ -45,7 +43,8 @@
     "build-browser": "browserify ./lib/index.js --outfile build/web-audio-api-shim.js",
     "build-minify": "uglifyjs build/web-audio-api-shim.js -m -r self -o build/web-audio-api-shim.min.js",
     "build-to5": "babel src --out-dir lib",
-    "lint": "jshint src test --reporter node_modules/jshint-stylish/stylish.js",
+    "lint": "eslint src test",
+    "prepublish": "rm -rf lib && npm run lint && npm run test && npm run build",
     "test": "karma start",
     "travis": "npm run lint && npm run test"
   }
