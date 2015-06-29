@@ -62,13 +62,22 @@
     }
     function mdFromSourceCode(text) {
       var re = /^\s*\/\/\/\/(?:\s(.*))?$/;
-      return text.split("\n").map(function(line) {
+
+      var lines = text.split("\n").map(function(line) {
         return re.exec(line);
       }).filter(function(m) {
         return !!m;
       }).map(function(m) {
-        return m[1];
-      }).join("\n");
+        return m[1] || "";
+      });
+
+      for (var i = 0; i < lines.length - 1; i++) {
+        if (lines[i + 1].charAt(0) === "#" && lines[i] !== "") {
+          lines.splice(i + 1, 0, "");
+        }
+      }
+
+      return lines.join("\n");
     }
     function flatten(array) {
       return Array.prototype.concat.apply([], array);
@@ -83,21 +92,22 @@
       return text;
     }
     Promise.resolve(docIndex).then(function(documentIndex) {
-      return Promise.all(documentIndex.map(function(path) {
-        if (!/\.\w+$/.test(path)) {
-          return path;
-        }
-        return fetch(path).then(function(res) {
-          return res.text();
-        }).then(function(text) {
-          if (/package\.json$/.test(path)) {
-            text = mdFromPackageJSON(JSON.parse(text));
-          } else if (!/\.md$/.test(path)) {
-            text = mdFromSourceCode(text);
-          }
-          return text;
+      var docs = [];
+
+      return documentIndex.reduce(function(promise, path, index) {
+        return promise.then(function() {
+          return fetch(path).then(function(res) {
+            return res.text();
+          }).then(function(text) {
+            if (/package\.json$/.test(path)) {
+              text = mdFromPackageJSON(JSON.parse(text));
+            } else if (!/\.md$/.test(path)) {
+              text = mdFromSourceCode(text);
+            }
+            docs[index] = text;
+          });
         });
-      })).then(function(docs) {
+      }, Promise.resolve()).then(function() {
         flatten(docs.map(function(doc) {
           var div = document.createElement("div");
           var md = marked(doc)
