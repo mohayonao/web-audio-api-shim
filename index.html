@@ -74,10 +74,10 @@
       return Array.prototype.concat.apply([], array);
     }
     function emoji(text) {
-      var O = '<img class="emoji" title=":o:" alt=":o:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2b55.png" height="20" width="20" align="absmiddle">';
+      var O = '<img class="emoji" title=":o:" alt=":o:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f197.png" height="20" width="20" align="absmiddle">';
       var X = '<img class="emoji" title=":x:" alt=":x:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/274c.png" height="20" width="20" align="absmiddle">';
 
-      text = text.replace(/:o:/g, O);
+      text = text.replace(/:ok:/g, O);
       text = text.replace(/:x:/g, X);
 
       return text;
