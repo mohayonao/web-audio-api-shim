@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.install = install;
-"use strict";
-
 var AnalyserNode = global.AnalyserNode;
 
 function installGetFloatTimeDomainData() {
@@ -46,8 +44,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.install = install;
-"use strict";
-
 var AudioBuffer = global.AudioBuffer;
 
 function installCopyFromChannel() {
@@ -70,6 +66,7 @@ function installCopyFromChannel() {
   //// - `void`
   AudioBuffer.prototype.copyFromChannel = function (destination, channelNumber, startInChannel) {
     var source = this.getChannelData(channelNumber | 0).subarray(startInChannel | 0);
+
     destination.set(source.subarray(0, Math.min(source.length, destination.length)));
   };
 }
@@ -106,24 +103,26 @@ function install() {
 (function (global){
 "use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (descriptor.value) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
-
-var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 exports.install = install;
-"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 var OriginalAudioContext = global.AudioContext;
 var OriginalOfflineAudioContext = global.OfflineAudioContext;
 var AudioNode = global.AudioNode;
 var EventTarget = global.EventTarget || global.Object.constructor;
+
+function nop() {}
 
 function inherits(ctor, superCtor) {
   ctor.prototype = Object.create(superCtor.prototype, {
@@ -217,21 +216,24 @@ function replaceAudioContext() {
       return Promise.reject(new Error("cannot suspend a closed AudioContext"));
     }
 
-    var changeState = function changeState() {
-      _this._.state = "suspended";
-      _this._.currentTime = _this._.audioContext.currentTime;
-    };
+    function changeState() {
+      this._.state = "suspended";
+      this._.currentTime = this._.audioContext.currentTime;
+    }
+
     var promise = undefined;
 
     if (typeof this._.audioContext === "function") {
       promise = this._.audioContext.suspend();
-      promise.then(changeState);
+      promise.then(function () {
+        changeState.call(_this);
+      });
     } else {
       AudioNode.prototype.disconnect.call(this._.destination);
 
       promise = Promise.resolve();
       promise.then(function () {
-        changeState();
+        changeState.call(_this);
 
         var e = new global.Event("statechange");
 
@@ -253,21 +255,24 @@ function replaceAudioContext() {
       return Promise.reject(new Error("cannot resume a closed AudioContext"));
     }
 
-    var changeState = function changeState() {
-      _this2._.state = "running";
-      _this2._.currentTime = 0;
-    };
+    function changeState() {
+      this._.state = "running";
+      this._.currentTime = 0;
+    }
+
     var promise = undefined;
 
     if (typeof this._.audioContext.resume === "function") {
       promise = this._.audioContext.resume();
-      promise.then(changeState);
+      promise.then(function () {
+        changeState.call(_this2);
+      });
     } else {
       AudioNode.prototype.connect.call(this._.destination, this._.audioContext.destination);
 
       promise = Promise.resolve();
       promise.then(function () {
-        changeState();
+        changeState.call(_this2);
 
         var e = new global.Event("statechange");
 
@@ -289,16 +294,19 @@ function replaceAudioContext() {
       return Promise.reject(new Error("Cannot close a context that is being closed or has already been closed."));
     }
 
-    var changeState = function changeState() {
-      _this3._.state = "closed";
-      _this3._.currentTime = Infinity;
-      _this3._.sampleRate = 0;
-    };
+    function changeState() {
+      this._.state = "closed";
+      this._.currentTime = Infinity;
+      this._.sampleRate = 0;
+    }
+
     var promise = undefined;
 
     if (typeof this._.audioContext.close === "function") {
       promise = this._.audioContext.close();
-      promise.then(changeState);
+      promise.then(function () {
+        changeState.call(_this3);
+      });
     } else {
       if (typeof this._.audioContext.suspend === "function") {
         this._.audioContext.suspend();
@@ -308,7 +316,7 @@ function replaceAudioContext() {
       promise = Promise.resolve();
 
       promise.then(function () {
-        changeState();
+        changeState.call(_this3);
 
         var e = new global.Event("statechange");
 
@@ -350,10 +358,10 @@ function replaceAudioContext() {
 
     _createClass(OfflineAudioContext, [{
       key: "oncomplete",
-      set: function (fn) {
+      set: function set(fn) {
         this._.audioContext.oncomplete = fn;
       },
-      get: function () {
+      get: function get() {
         return this._.audioContext.oncomplete;
       }
     }]);
@@ -418,30 +426,7 @@ function replaceAudioContext() {
   global.OfflineAudioContext = OfflineAudioContext;
 }
 
-function installCreateAudioWorker() {
-  if (OriginalAudioContext.prototype.hasOwnProperty("createAudioWorker")) {
-    return;
-  }
-
-  var AudioWorkerNode = require("audio-worker-node");
-
-  //// ### AudioContext.prototype.createAudioWorker
-  //// Creates an **`AudioWorkerNode`** and its associated **`AudioWorkerGlobalScope`** for direct audio processing using JavaScript.
-  ////
-  //// #### Parameters
-  //// - `scriptURL: string`
-  ////   - This parameter represents the URL of the script to be loaded as an AudioWorker.
-  //// - `numberOfInputChannels: number = 2`
-  ////   - This parameter determines the number of channels for this node's input.
-  //// - `numberOfOutputChannels: number = 2`
-  ////   - This parameter determines the number of channels for this node's output.
-  ////
-  //// #### Return
-  //// - `AudioNode as AudioWorkerNode`
-  OriginalAudioContext.prototype.createAudioWorker = function (scriptURL, numberOfInputChannels, numberOfOutputChannels) {
-    return new AudioWorkerNode(this, scriptURL, numberOfInputChannels, numberOfOutputChannels);
-  };
-}
+function installCreateAudioWorker() {}
 
 function installCreateStereoPanner() {
   if (OriginalAudioContext.prototype.hasOwnProperty("createStereoPanner")) {
@@ -469,9 +454,11 @@ function installDecodeAudioData() {
 
   try {
     var audioData = new Uint8Array(0).buffer;
-    var nop = function nop() {};
+
     isPromiseBased = !!audioContext.decodeAudioData(audioData, nop);
-  } catch (e) {}
+  } catch (e) {
+    nop(e);
+  }
 
   if (isPromiseBased) {
     return;
@@ -556,7 +543,9 @@ function installStartRendering() {
 
   try {
     isPromiseBased = !!audioContext.startRendering();
-  } catch (e) {}
+  } catch (e) {
+    nop(e);
+  }
 
   if (isPromiseBased) {
     return;
@@ -577,6 +566,7 @@ function installStartRendering() {
 
     return new Promise(function (resolve) {
       var oncomplete = _this6.oncomplete;
+
       _this6.oncomplete = function (e) {
         resolve(e.renderedBuffer);
         if (typeof oncomplete === "function") {
@@ -599,7 +589,7 @@ function install() {
   installSuspend();
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"audio-worker-node":13,"stereo-panner-node":19}],4:[function(require,module,exports){
+},{"stereo-panner-node":9}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -607,8 +597,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.install = install;
-"use strict";
-
 var OfflineAudioContext = global.OfflineAudioContext;
 var AudioNode = global.AudioNode;
 var connect = AudioNode.prototype.connect;
@@ -723,11 +711,11 @@ function installDisconnect() {
   //// - `void`
   ////
   AudioNode.prototype.disconnect = function () {
+    this._shim$connections = this._shim$connections || [];
+
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
-
-    this._shim$connections = this._shim$connections || [];
 
     if (args.length === 0) {
       disconnectAll(this);
@@ -743,16 +731,19 @@ function installDisconnect() {
     var output = arguments[1] === undefined ? 0 : arguments[1];
     var input = arguments[2] === undefined ? 0 : arguments[2];
 
+    var _input = undefined;
+
     this._shim$connections = this._shim$connections || [];
 
     if (destination instanceof AudioNode) {
       connect.call(this, destination, output, input);
+      _input = input;
     } else {
       connect.call(this, destination, output);
-      input = 0;
+      _input = 0;
     }
 
-    this._shim$connections.push([destination, output, input]);
+    this._shim$connections.push([destination, output, _input]);
   };
   AudioNode.prototype.connect.original = connect;
 }
@@ -766,7 +757,7 @@ function install() {
 
 var _install = require("./install");
 
-_install.install();
+(0, _install.install)();
 },{"./install":6}],6:[function(require,module,exports){
 (function (global){
 "use strict";
@@ -775,7 +766,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.install = install;
-"use strict";
 
 function install() {
   if (!global.hasOwnProperty("AudioContext") && global.hasOwnProperty("webkitAudioContext")) {
@@ -796,688 +786,14 @@ function install() {
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioContext":3,"./AudioNode":4}],7:[function(require,module,exports){
-(function (global){
-"use strict";
-
-/**
- *  AudioParamImpl
- *  +-----------------+
- *  | GainNode(inlet) |
- *  | gain: value     |
- *  +-----------------+
- *    |
- *  +-----------------------------+
- *  | ScriptProcessorNode(outlet) |
- *  +-----------------------------+
- */
-function AudioParamImpl(audioContext, defaultValue, bufferSize) {
-  this.inlet = audioContext.createGain();
-  this.outlet = audioContext.createScriptProcessor(bufferSize, 1, 1);
-
-  this.param = this.inlet.gain;
-  this.param.value = defaultValue;
-  this.array = new Float32Array(bufferSize);
-
-  this.inlet.connect(this.outlet);
-
-  var array = this.array;
-  this.outlet.onaudioprocess = function(e) {
-    array.set(e.inputBuffer.getChannelData(0));
-  };
-}
-
-AudioParamImpl.prototype.connect = function(destination) {
-  global.AudioNode.prototype.connect.call(this.outlet, destination);
-};
-
-AudioParamImpl.prototype.disconnect = function() {
-  global.AudioNode.prototype.disconnect.call(this.outlet);
-};
-
-module.exports = AudioParamImpl;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],8:[function(require,module,exports){
-"use strict";
-
-var AudioParamImpl = require("./audio-param-impl");
-
-function AudioParamNode(audioContext, defaultValue, bufferSize) {
-  var impl = new AudioParamImpl(audioContext, defaultValue, bufferSize);
-
-  Object.defineProperties(impl.inlet, {
-    param: {
-      value: impl.param,
-      enumerable: true
-    },
-    array: {
-      value: impl.array,
-      enumerable: true
-    },
-    connect: {
-      value: function(destination) {
-        impl.connect(destination);
-      }
-    },
-    disconnect: {
-      value: function() {
-        impl.disconnect();
-      }
-    }
-  });
-
-  return impl.inlet;
-}
-
-module.exports = AudioParamNode;
-
-},{"./audio-param-impl":7}],9:[function(require,module,exports){
-"use strict";
-
-var AudioProcessBuilder = {};
-
-AudioProcessBuilder.build = function(opts) {
-  var numOfInput = opts.numOfInput;
-  var numOfOutput = opts.numOfOutput;
-
-  if (numOfInput === 1 && numOfOutput === 1) {
-    return build_onaudioprocess_1(opts);
-  }
-  if (numOfInput === 2 && numOfOutput === 2) {
-    return build_onaudioprocess_2(opts);
-  }
-  return build_onaudioprocess_n(opts);
-};
-
-function build_onaudioprocess_1(opts) {
-  var func = opts.func;
-  var scope = opts.scope;
-  var parameters = opts.parameters;
-
-  return function(e) {
-    e.inputBuffers = [
-      e.inputBuffer.getChannelData(0)
-    ];
-    e.outputBuffers = [
-      e.outputBuffer.getChannelData(0)
-    ];
-    e.parameters = parameters;
-
-    func.call(scope, e);
-  };
-}
-
-function build_onaudioprocess_2(opts) {
-  var func = opts.func;
-  var scope = opts.scope;
-  var parameters = opts.parameters;
-
-  return function(e) {
-    var inp = e.inputBuffer;
-    var out = e.outputBuffer;
-    e.inputBuffers = [
-      inp.getChannelData(0),
-      inp.getChannelData(1)
-    ];
-    e.outputBuffers = [
-      out.getChannelData(0),
-      out.getChannelData(1)
-    ];
-    e.parameters = parameters;
-
-    func.call(scope, e);
-  };
-}
-
-function build_onaudioprocess_n(opts) {
-  var func = opts.func;
-  var scope = opts.scope;
-  var numOfInput = opts.numOfInput;
-  var numOfOutput = opts.numOfOutput;
-  var parameters = opts.parameters;
-
-  return function(e) {
-    var inputBuffers = new Array(numOfInput);
-    var outputBuffers = new Array(numOfOutput);
-    var i;
-
-    for (i = 0; i < numOfInput; i++) {
-      inputBuffers[i] = e.inputBuffer.getChannelData(i);
-    }
-    for (i = 0; i < numOfOutput; i++) {
-      outputBuffers[i] = e.outputBuffer.getChannelData(i);
-    }
-
-    e.inputBuffers = inputBuffers;
-    e.outputBuffers = outputBuffers;
-    e.parameters = parameters;
-
-    func.call(scope, e);
-  };
-}
-
-module.exports = AudioProcessBuilder;
-
-},{}],10:[function(require,module,exports){
-"use strict";
-
-var WORKER_ATTRS = [
-  "onaudioprocess",
-  "sampleRate",
-  "self",
-  "onmessage",
-  "postMessage",
-  "close",
-  "importScripts",
-];
-
-var AudioWorkerCode = {};
-
-AudioWorkerCode.tokens = function(src) {
-  var pos = 0;
-  var tokens = [];
-
-  function eat(re) {
-    while (pos < src.length) {
-      var ch = src.charAt(pos);
-      if (!re.test(ch)) {
-        break;
-      }
-      pos += 1;
-    }
-  }
-
-  function eatString(quote) {
-    while (pos < src.length) {
-      var ch = src.charAt(pos++);
-      if (ch === quote) {
-        return;
-      }
-      if (ch === "\\") {
-        pos += 1;
-      }
-    }
-    // istanbul ignore next
-    throw new SyntaxError("Unexpected token ILLEGAL");
-  }
-
-  function eatMultiLineComment() {
-    pos += 1;
-    while (pos < src.length) {
-      var ch = src.charAt(pos++);
-      if (ch === "*" && src.charAt(pos) === "/") {
-        pos += 1;
-        return;
-      }
-    }
-    // istanbul ignore next
-    throw new SyntaxError("Unexpected token ILLEGAL");
-  }
-
-  while (pos < src.length) {
-    var begin = pos;
-    var ch = src.charAt(pos++);
-
-    if (/\s/.test(ch)) {
-      eat(/\s/);
-    } else if (/[a-zA-Z_$]/.test(ch)) {
-      eat(/[\w$]/);
-    } else if (/\d/.test(ch)) {
-      eat(/[.\d]/);
-    } else if (/['"]/.test(ch)) {
-      eatString(ch);
-    } else if (ch === "/") {
-      ch = src.charAt(pos);
-      if (ch === "/") {
-        eat(/[^\n]/);
-      } else if (ch === "*") {
-        eatMultiLineComment();
-      }
-    }
-
-    tokens.push(src.slice(begin, pos));
-  }
-
-  return tokens;
-};
-
-AudioWorkerCode.filter = function(src) {
-  var tokens = AudioWorkerCode.tokens(src);
-
-  function prevToken(index) {
-    while (index--) {
-      if (/[\S/]/.test(tokens[index].charAt(0))) {
-        return tokens[index];
-      }
-    }
-    return "";
-  }
-
-  WORKER_ATTRS.forEach(function(attr) {
-    var pos = 0;
-    var index;
-
-    while ((index = tokens.indexOf(attr, pos)) !== -1) {
-      if (prevToken(index) !== ".") {
-        tokens[index] = "__self." + tokens[index];
-      }
-      pos = index + 1;
-    }
-  });
-
-  return tokens.join("");
-};
-
-AudioWorkerCode.compile = function(src) {
-  var code = [
-    "(function(__self) { 'use strict';",
-    AudioWorkerCode.filter(src),
-    "})"
-  ].join("\n");
-  return eval.call(null, code);
-};
-
-module.exports = AudioWorkerCode;
-
-},{}],11:[function(require,module,exports){
-"use strict";
-
-function AudioWorkerGlobalScope(node) {
-  var onaudioprocess = null;
-
-  Object.defineProperties(this, {
-    self: {
-      value: this,
-      enumerable: true
-    },
-    sampleRate: {
-      value: node.sampleRate,
-      enumerable: true
-    },
-    onaudioprocess: {
-      set: function(value) {
-        if (typeof value !== "function") {
-          value = null;
-        }
-        node.onaudioprocess(value);
-        onaudioprocess = value;
-      },
-      get: function() {
-        return onaudioprocess;
-      },
-      enumerable: true
-    },
-    onmessage: {
-      set: function(value) {
-        if (typeof value === "function") {
-          value = value.bind(this);
-        } else {
-          value = null;
-        }
-        node.port2.onmessage = value;
-      },
-      get: function() {
-        return node.port2.onmessage;
-      },
-      enumerable: true
-    },
-    postMessage: {
-      value: function() {
-        node.port2.postMessage.apply(node.port2, arguments);
-      }
-    },
-    close: {
-      value: function() {
-        node.close.apply(node, arguments);
-      }
-    },
-    importScripts: {
-      value: function() {
-        node.importScripts.apply(node, arguments);
-      }
-    }
-  });
-}
-
-module.exports = AudioWorkerGlobalScope;
-
-},{}],12:[function(require,module,exports){
-(function (global){
-"use strict";
-
-var AudioParamNode = require("./audio-param-node");
-var AudioWorkerGlobalScope = require("./audio-worker-global-scope");
-var AudioProcessBuilder = require("./audio-process-builder");
-var ScriptLoader = require("./script-loader");
-var AudioWorkerCode = require("./audio-worker-code");
-var MessageChannel = require("./message-channel");
-
-var BUFFER_SIZE = 1024;
-
-function AudioWorkerNodeImpl(audioContext, scriptURL, numOfInput, numOfOutput) {
-  var ch = new MessageChannel();
-
-  this.audioContext = audioContext;
-  this.sampleRate = audioContext.sampleRate;
-  this.inlet = audioContext.createScriptProcessor(BUFFER_SIZE, numOfInput, numOfOutput);
-  this.outlet = this.inlet;
-  this.port1 = ch.port1;
-  this.port2 = ch.port2;
-  this.scope = new AudioWorkerGlobalScope(this);
-
-  this._numOfInput = numOfInput;
-  this._numOfOutput = numOfOutput;
-  this._isConnected = false;
-  this._isTerminated = false;
-  this._silencer = null;
-  this._dc1buffer = null;
-  this._dc1 = null;
-  this._params = {};
-  this._parameters = {};
-
-  var scope = this.scope;
-  ScriptLoader.load(scriptURL, function(script) {
-    try {
-      AudioWorkerCode.compile(script).call(scope, scope);
-    } catch (e) {}
-  });
-}
-
-AudioWorkerNodeImpl.prototype.connect = function(destination) {
-  var audioContext = this.audioContext;
-
-  if (!this._isConnected) {
-    this._dc1buffer = audioContext.createBuffer(1, 2, audioContext.sampleRate);
-    this._dc1buffer.getChannelData(0).set([ 1, 1 ]);
-
-    this._dc1 = audioContext.createBufferSource();
-    this._dc1.buffer = this._dc1buffer;
-    this._dc1.loop = true;
-    this._dc1.start(audioContext.currentTime);
-
-    Object.keys(this._params).forEach(function(name) {
-      this._dc1.connect(this._params[name]);
-    }, this);
-
-    this._isConnected = true;
-  }
-
-  global.AudioNode.prototype.connect.call(this.inlet, destination);
-};
-
-AudioWorkerNodeImpl.prototype.disconnect = function() {
-  var audioContext = this.audioContext;
-
-  if (this._isConnected) {
-    this._dc1.stop(audioContext.currentTime);
-    this._dc1.disconnect();
-
-    this._dc1buffer = null;
-    this._dc1 = null;
-    this._isConnected = false;
-  }
-
-  global.AudioNode.prototype.disconnect.call(this.outlet);
-};
-
-AudioWorkerNodeImpl.prototype.terminate = function() {
-  if (!this._isTerminated) {
-    this.inlet.onaudioprocess = null;
-    this.port1.close();
-    this.port2.close();
-    this._isTerminated = true;
-  }
-};
-
-AudioWorkerNodeImpl.prototype.addParameter = function(name, defaultValue) {
-  var audioContext = this.audioContext;
-
-  if (this._params.hasOwnProperty(name)) {
-    return this._params[name].param;
-  }
-
-  if (this._silencer === null) {
-    this._silencer = audioContext.createGain();
-    this._silencer.gain.value = 0;
-    this._silencer.connect(this.outlet);
-  }
-
-  var paramNode = new AudioParamNode(audioContext, defaultValue, BUFFER_SIZE);
-
-  paramNode.connect(this._silencer);
-
-  if (this._isConnected) {
-    this._dc1.connect(paramNode);
-  }
-
-  this._params[name] = paramNode;
-  this._parameters[name] = paramNode.array;
-
-  return paramNode.param;
-};
-
-AudioWorkerNodeImpl.prototype.getParameter = function(name) {
-  return this._params[name] && this._params[name].param;
-};
-
-AudioWorkerNodeImpl.prototype.removeParameter = function(name) {
-  if (!this._params.hasOwnProperty(name)) {
-    return;
-  }
-
-  this._params[name].disconnect();
-
-  delete this._params[name];
-  delete this._parameters[name];
-
-  if (Object.keys(this._params).length === 0) {
-    this._silencer.disconnect();
-    this._silencer = null;
-  }
-};
-
-AudioWorkerNodeImpl.prototype.onaudioprocess = function(func) {
-  if (this._isTerminated || typeof func !== "function") {
-    this.inlet.onaudioprocess = null;
-  } else {
-    this.inlet.onaudioprocess = AudioProcessBuilder.build({
-      func: func,
-      scope: this.scope,
-      numOfInput: this._numOfInput,
-      numOfOutput: this._numOfOutput,
-      parameters: this._parameters,
-    });
-  }
-};
-
-AudioWorkerNodeImpl.prototype.close = function() {
-  this.terminate();
-};
-
-AudioWorkerNodeImpl.prototype.importScripts = function() {
-  throw new Error("Not Supported: importScripts");
-};
-
-module.exports = AudioWorkerNodeImpl;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./audio-param-node":8,"./audio-process-builder":9,"./audio-worker-code":10,"./audio-worker-global-scope":11,"./message-channel":14,"./script-loader":15}],13:[function(require,module,exports){
-"use strict";
-
-var utils = require("./utils");
-var AudioWorkerImpl = require("./audio-worker-impl");
-
-function AudioWorkerNode(audioContext, scriptURL, numberOfInputChannels, numberOfOutputChannels) {
-  numberOfInputChannels = utils.defaults(numberOfInputChannels, 2);
-  numberOfOutputChannels = utils.defaults(numberOfOutputChannels, 2);
-
-  var impl = new AudioWorkerImpl(audioContext, scriptURL, numberOfInputChannels, numberOfOutputChannels);
-
-  Object.defineProperties(impl.inlet, {
-    onmessage: {
-      set: function(value) {
-        if (typeof value !== "function") {
-          value = null;
-        }
-        impl.port1.onmessage = value;
-      },
-      get: function() {
-        return impl.port1.onmessage;
-      },
-      enumerable: true
-    },
-    connect: {
-      value: function(destination) {
-        return impl.connect(destination);
-      }
-    },
-    disconnect: {
-      value: function() {
-        return impl.disconnect();
-      }
-    },
-    postMessage: {
-      value: function() {
-        return impl.port1.postMessage.apply(impl.port1, arguments);
-      }
-    },
-    addParameter: {
-      value: function(name, defaultValue) {
-        defaultValue = utils.defaults(defaultValue, 0);
-        if (!Object.getOwnPropertyDescriptor(impl.inlet, name)) {
-          Object.defineProperty(impl.inlet, name, {
-            get: function() {
-              return impl.getParameter(name);
-            },
-            configurable: true,
-            enumerable: true
-          });
-        }
-        return impl.addParameter(name, defaultValue);
-      }
-    },
-    removeParameter: {
-      value: function(name) {
-        if (Object.getOwnPropertyDescriptor(impl.inlet, name)) {
-          delete impl.inlet[name];
-        }
-        return impl.removeParameter(name);
-      }
-    },
-    terminate: {
-      value: function() {
-        return impl.terminate();
-      }
-    }
-  });
-
-  return impl.inlet;
-}
-module.exports = AudioWorkerNode;
-
-},{"./audio-worker-impl":12,"./utils":16}],14:[function(require,module,exports){
-(function (global){
-"use strict";
-
-function MessageChannelShim() {
-  this.port1 = new MessagePort();
-  this.port2 = new MessagePort();
-  this.port1._target = this.port2;
-  this.port2._target = this.port1;
-}
-
-function MessagePort() {
-  this._onmessage = null;
-  this._target = null;
-  this._isClosed = false;
-  this._pendings = [];
-
-  Object.defineProperties(this, {
-    onmessage: {
-      set: function(value) {
-        var _this = this;
-        this._onmessage = value;
-        if (this._pendings.length) {
-          setTimeout(function() {
-            _this._pendings.splice(0).forEach(function(e) {
-              _this._onmessage(e);
-            });
-          }, 0);
-        }
-      },
-      get: function() {
-        return this._onmessage;
-      },
-      enumerable: true
-    }
-  });
-}
-
-MessagePort.prototype.postMessage = function(message) {
-  var target = this._target;
-  if (!this._isClosed) {
-    var e = {
-      type: "message",
-      data: message
-    };
-    if (typeof target._onmessage === "function") {
-      setTimeout(function() {
-        target._onmessage(e);
-      }, 0);
-    } else {
-      target._pendings.push(e);
-    }
-  }
-};
-
-MessagePort.prototype.close = function() {
-  this._isClosed = true;
-  this._pendings.splice(0);
-};
-
-module.exports = global.MessageChannel || MessageChannelShim;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
-(function (global){
-"use strict";
-
-var ScriptLoader = {};
-
-ScriptLoader.load = function(scriptURL, callback) {
-  var xhr = new global.XMLHttpRequest();
-  xhr.open("GET", scriptURL);
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      callback(xhr.response);
-    }
-  };
-  xhr.send();
-};
-
-module.exports = ScriptLoader;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],16:[function(require,module,exports){
-"use strict";
-
-function defaults(value, defaultValue) {
-  return value !== undefined ? value : defaultValue;
-}
-
-module.exports = {
-  defaults: defaults
-};
-
-},{}],17:[function(require,module,exports){
-"use strict";
-
 var WS_CURVE_SIZE = 4096;
 var curveL = new Float32Array(WS_CURVE_SIZE);
 var curveR = new Float32Array(WS_CURVE_SIZE);
 
 (function() {
-  for (var i = 0; i < WS_CURVE_SIZE; i++) {
+  var i;
+
+  for (i = 0; i < WS_CURVE_SIZE; i++) {
     curveL[i] = Math.cos((i / WS_CURVE_SIZE) * Math.PI * 0.5);
     curveR[i] = Math.sin((i / WS_CURVE_SIZE) * Math.PI * 0.5);
   }
@@ -1488,10 +804,8 @@ module.exports = {
   R: curveR,
 };
 
-},{}],18:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (global){
-"use strict";
-
 var curve = require("./curve");
 
 /**
@@ -1560,6 +874,7 @@ function StereoPannerImpl(audioContext) {
 
 StereoPannerImpl.prototype.connect = function(destination) {
   var audioContext = this.audioContext;
+
   if (!this._isConnected) {
     this._isConnected = true;
     this._dc1buffer = audioContext.createBuffer(1, 2, audioContext.sampleRate);
@@ -1571,11 +886,13 @@ StereoPannerImpl.prototype.connect = function(destination) {
     this._dc1.start(audioContext.currentTime);
     this._dc1.connect(this._pan);
   }
+
   global.AudioNode.prototype.connect.call(this.outlet, destination);
 };
 
 StereoPannerImpl.prototype.disconnect = function() {
   var audioContext = this.audioContext;
+
   if (this._isConnected) {
     this._isConnected = false;
     this._dc1.stop(audioContext.currentTime);
@@ -1583,16 +900,17 @@ StereoPannerImpl.prototype.disconnect = function() {
     this._dc1 = null;
     this._dc1buffer = null;
   }
+
   global.AudioNode.prototype.disconnect.call(this.outlet);
 };
 
 module.exports = StereoPannerImpl;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./curve":17}],19:[function(require,module,exports){
-"use strict";
-
+},{"./curve":7}],9:[function(require,module,exports){
+(function (global){
 var StereoPannerImpl = require("./stereo-panner-impl");
+var AudioContext = global.AudioContext || global.webkitAudioContext;
 
 function StereoPanner(audioContext) {
   var impl = new StereoPannerImpl(audioContext);
@@ -1600,23 +918,33 @@ function StereoPanner(audioContext) {
   Object.defineProperties(impl.inlet, {
     pan: {
       value: impl.pan,
-      enumerable: true
+      enumerable: true,
     },
     connect: {
       value: function(node) {
         return impl.connect(node);
-      }
+      },
     },
     disconnect: {
       value: function() {
         return impl.disconnect();
-      }
-    }
+      },
+    },
   });
 
   return impl.inlet;
 }
 
+StereoPanner.polyfill = function() {
+  if (!AudioContext || AudioContext.prototype.hasOwnProperty("createStereoPanner")) {
+    return;
+  }
+  AudioContext.prototype.createStereoPanner = function() {
+    return new StereoPanner(this);
+  };
+};
+
 module.exports = StereoPanner;
 
-},{"./stereo-panner-impl":18}]},{},[5]);
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./stereo-panner-impl":8}]},{},[5]);
