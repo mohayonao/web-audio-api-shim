@@ -140,6 +140,8 @@ function installDisconnect() {
   AudioNode.prototype.connect.original = connect;
 }
 
-export function install() {
-  installDisconnect();
+export function install(stage) {
+  if (stage !== 0) {
+    installDisconnect();
+  }
 }

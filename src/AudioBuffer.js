@@ -44,7 +44,9 @@ function installCopyToChannel() {
   //// #### Return
   //// - `void`
   AudioBuffer.prototype.copyToChannel = function(source, channelNumber, startInChannel) {
-    this.getChannelData(channelNumber|0).set(source, startInChannel|0);
+    let clipped = source.subarray(0, Math.min(source.length, this.length - (startInChannel|0)));
+
+    this.getChannelData(channelNumber|0).set(clipped, startInChannel|0);
   };
 }
 

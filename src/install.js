@@ -1,4 +1,4 @@
-export function install() {
+export default function install(stage = Infinity) {
   if (!global.hasOwnProperty("AudioContext") && global.hasOwnProperty("webkitAudioContext")) {
     global.AudioContext = global.webkitAudioContext;
   }
@@ -10,8 +10,8 @@ export function install() {
     return;
   }
 
-  require("./AnalyserNode").install();
-  require("./AudioBuffer").install();
-  require("./AudioNode").install();
-  require("./AudioContext").install();
+  require("./AnalyserNode").install(stage);
+  require("./AudioBuffer").install(stage);
+  require("./AudioNode").install(stage);
+  require("./AudioContext").install(stage);
 }

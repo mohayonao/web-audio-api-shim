@@ -16,10 +16,23 @@ npm:
 npm install @mohayonao/web-audio-api-shim
 ```
 
+You can two versions `full` or `light`.
+The `light` version installs easy polyfills only.
+
+```js
+require("@mohayonao/web-audio-api-shim");
+
+// or
+
+require("@mohayonao/web-audio-api-shim/light");
+```
+
 downloads:
 
 - [web-audio-api-shim.js](https://raw.githubusercontent.com/mohayonao/web-audio-api-shim/master/build/web-audio-api-shim.js)
 - [web-audio-api-shim.min.js](https://raw.githubusercontent.com/mohayonao/web-audio-api-shim/master/build/web-audio-api-shim.min.js)
+- [web-audio-api-shim-light.js](https://raw.githubusercontent.com/mohayonao/web-audio-api-shim/master/build/web-audio-api-shim-light.js)
+- [web-audio-api-shim-light.min.js](https://raw.githubusercontent.com/mohayonao/web-audio-api-shim/master/build/web-audio-api-shim-light.min.js)
 
 ## Implemented
 - `AnalyserNode#getFloatTimeDomainData`
@@ -27,11 +40,13 @@ downloads:
 - `AudioBuffer#copyToChannel`
 - `AudioContext#createStereoPanner`
 - `AudioContext#decodeAudioData`
-- `AudioContext#close`
-- `AudioContext#resume`
-- `AudioContext#suspend`
 - `OfflineAudioContext#startRendering`
-- `AudioNode#disconnect`
+
+- The below api exclude in light version
+  - `AudioContext#close`
+  - `AudioContext#resume`
+  - `AudioContext#suspend`
+  - `AudioNode#disconnect`
 
 ## Not Implemented
 - `AudioContext#createAudioWorker`
