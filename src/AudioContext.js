@@ -364,7 +364,7 @@ function installDecodeAudioData() {
   let isPromiseBased = false;
 
   try {
-    let audioData = new Uint32Array([ 1179011410, 44, 1163280727, 544501094, 16, 131073, 44100, 176400, 1048580, 1635017060, 8, 0, 0 ]).buffer;
+    let audioData = new Uint32Array([ 1179011410, 48, 1163280727, 544501094, 16, 131073, 44100, 176400, 1048580, 1635017060, 8, 0, 0, 0, 0 ]).buffer;
 
     isPromiseBased = !!audioContext.decodeAudioData(audioData, nop);
   } catch (e) {
@@ -490,12 +490,15 @@ function installStartRendering() {
   OriginalOfflineAudioContext.prototype.startRendering.original = startRendering;
 }
 
-export function install() {
+export function install(stage) {
   installCreateAudioWorker();
   installCreateStereoPanner();
   installDecodeAudioData();
   installStartRendering();
-  installClose();
-  installResume();
-  installSuspend();
+
+  if (stage !== 0) {
+    installClose();
+    installResume();
+    installSuspend();
+  }
 }
