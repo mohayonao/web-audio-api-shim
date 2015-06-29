@@ -1,5 +1,3 @@
-"use strict";
-
 let AudioBuffer = global.AudioBuffer;
 
 function installCopyFromChannel() {
@@ -22,6 +20,7 @@ function installCopyFromChannel() {
   //// - `void`
   AudioBuffer.prototype.copyFromChannel = function(destination, channelNumber, startInChannel) {
     let source = this.getChannelData(channelNumber|0).subarray(startInChannel|0);
+
     destination.set(source.subarray(0, Math.min(source.length, destination.length)));
   };
 }

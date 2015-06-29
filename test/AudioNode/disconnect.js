@@ -36,10 +36,10 @@
     // +---------------------------+
     //   | 0.5625                | 0.5625
     beforeEach(function() {
-      _ = {};
-
       var srcBuffer = audioContext.createBuffer(2, 2, audioContext.sampleRate);
       var trigBuffer = audioContext.createBuffer(1, 2, audioContext.sampleRate);
+
+      _ = {};
 
       srcBuffer.getChannelData(0).set([ 0.125, 0.125 ]);
       srcBuffer.getChannelData(1).set([ 0.250, 0.250 ]);
@@ -87,9 +87,11 @@
       }
 
       function ready() {
+        var x;
+
         _.analyser.getByteTimeDomainData(array);
 
-        var x = byte2float(array[0]);
+        x = byte2float(array[0]);
 
         if (x === 0) {
           return setTimeout(ready, 0);
@@ -103,9 +105,11 @@
       }
 
       function test() {
+        var x;
+
         _.analyser.getByteTimeDomainData(array);
 
-        var x = byte2float(array[0]);
+        x = byte2float(array[0]);
 
         if (x === y) {
           return setTimeout(test, 0);
@@ -307,5 +311,4 @@
       });
     });
   });
-
 })();

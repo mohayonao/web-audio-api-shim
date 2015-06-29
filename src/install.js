@@ -1,5 +1,3 @@
-"use strict";
-
 export function install() {
   if (!global.hasOwnProperty("AudioContext") && global.hasOwnProperty("webkitAudioContext")) {
     global.AudioContext = global.webkitAudioContext;

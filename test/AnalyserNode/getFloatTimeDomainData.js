@@ -11,7 +11,7 @@
       _.analyser = audioContext.createAnalyser();
       _.mute = audioContext.createGain();
 
-      _.buffer.getChannelData(0).set([ -1, -1/3, +1/3, +1 ]);
+      _.buffer.getChannelData(0).set([ -1, -1 / 3, 1 / 3, 1 ]);
 
       _.bufSrc.buffer = _.buffer;
       _.bufSrc.loop = true;
@@ -66,5 +66,4 @@
       });
     });
   });
-
 })();

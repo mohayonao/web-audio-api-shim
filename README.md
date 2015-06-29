@@ -1,15 +1,20 @@
 # web-audio-api-shim
 [![Build Status](http://img.shields.io/travis/mohayonao/web-audio-api-shim.svg?style=flat-square)](https://travis-ci.org/mohayonao/web-audio-api-shim)
+[![NPM Version](http://img.shields.io/npm/v/@mohayonao/web-audio-api-shim.svg?style=flat-square)](https://www.npmjs.org/package/@mohayonao/web-audio-api-shim)
 [![Dependency Status](http://img.shields.io/david/mohayonao/web-audio-api-shim.svg?style=flat-square)](https://david-dm.org/mohayonao/web-audio-api-shim)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://mohayonao.mit-license.org/)
 
 > shim for legacy Web Audio API
 
 ## Specification
-- [Web Audio API - W3C Editor's Draft 18 March 2015](http://webaudio.github.io/web-audio-api/)
+- [Web Audio API - W3C Editor's Draft 22 June 2015](http://webaudio.github.io/web-audio-api/)
 
 ## Installation
-This project is an experimental. So, haven't be published to `npm` or `bower`.
+npm:
+
+```
+npm install @mohayonao/web-audio-api-shim
+```
 
 downloads:
 
@@ -20,29 +25,31 @@ downloads:
 - `AnalyserNode#getFloatTimeDomainData`
 - `AudioBuffer#copyFromChannel`
 - `AudioBuffer#copyToChannel`
-- `AudioContext#createAudioWorker`
 - `AudioContext#createStereoPanner`
 - `AudioContext#decodeAudioData`
 - `AudioContext#close`
 - `AudioContext#resume`
 - `AudioContext#suspend`
-- `OffelinAudioContext#startRendering`
+- `OfflineAudioContext#startRendering`
 - `AudioNode#disconnect`
 
+## Not Implemented
+- `AudioContext#createAudioWorker`
+
 ## Native API Supports
-|                        | Shim | Chrome  | Firefox | Opera   | Safari |
+|                        | Shim | Chrome  | Opera   | Firefox | Safari |
 | -----------------------|:----:|:-------:|:-------:|:-------:|:------:|
-| getFloatTimeDomainData | :ok: | :ok: 37 | :ok: 30 | :ok: 22 | :x: 8  |
-| copyFromChannel        | :ok: | :ok: 43 | :ok: 27 | :ok: 30 | :x: 8  |
-| copyToChannel          | :ok: | :ok: 43 | :ok: 27 | :ok: 30 | :x: 8  |
-| createAudioWorker      | :x:  | :x:  43 | :x:  38 | :x:  30 | :x: 8  |
-| createStereoPanner     | :ok: | :ok: 41 | :ok: 37 | :ok: 28 | :x: 8  |
-| decodeAudioData        | :ok: | :x:  43 | :ok: 36 | :x:  30 | :x: 8  |
-| close                  | :ok: | :ok: 42 | :x:  38 | :ok: 29 | :x: 8  |
-| suspend                | :ok: | :ok: 41 | :x:  38 | :ok: 28 | :x: 8  |
-| resume                 | :ok: | :ok: 41 | :x:  38 | :ok: 28 | :x: 8  |
-| startRendering         | :ok: | :ok: 42 | :ok: 37 | :ok: 29 | :x: 8  |
-| disconnect             | :ok: | :ok: 43 | :x:  38 | :ok: 30 | :x: 8  |
+| getFloatTimeDomainData | :ok: | :ok: 37 | :ok: 22 | :ok: 30 | :x: 8  |
+| copyFromChannel        | :ok: | :ok: 43 | :ok: 30 | :ok: 27 | :x: 8  |
+| copyToChannel          | :ok: | :ok: 43 | :ok: 30 | :ok: 27 | :x: 8  |
+| createAudioWorker      | :x:  | :x:  43 | :x:  30 | :x:  38 | :x: 8  |
+| createStereoPanner     | :ok: | :ok: 41 | :ok: 28 | :ok: 37 | :x: 8  |
+| decodeAudioData        | :ok: | :x:  43 | :x:  30 | :ok: 36 | :x: 8  |
+| close                  | :ok: | :ok: 42 | :ok: 29 | :x:  38 | :x: 8  |
+| suspend                | :ok: | :ok: 41 | :ok: 28 | :x:  38 | :x: 8  |
+| resume                 | :ok: | :ok: 41 | :ok: 28 | :x:  38 | :x: 8  |
+| startRendering         | :ok: | :ok: 42 | :ok: 29 | :ok: 37 | :x: 8  |
+| disconnect             | :ok: | :ok: 43 | :ok: 30 | :x:  38 | :x: 8  |
 
 ## Online test suites
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)

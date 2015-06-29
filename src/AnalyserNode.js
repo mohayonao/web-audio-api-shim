@@ -1,5 +1,3 @@
-"use strict";
-
 let AnalyserNode = global.AnalyserNode;
 
 function installGetFloatTimeDomainData() {

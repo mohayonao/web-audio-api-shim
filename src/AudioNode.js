@@ -1,5 +1,3 @@
-"use strict";
-
 let OfflineAudioContext = global.OfflineAudioContext;
 let AudioNode = global.AudioNode;
 let connect = AudioNode.prototype.connect;
@@ -125,16 +123,19 @@ function installDisconnect() {
   AudioNode.prototype.disconnect.original = disconnect;
 
   AudioNode.prototype.connect = function(destination, output = 0, input = 0) {
+    let _input;
+
     this._shim$connections = this._shim$connections || [];
 
     if (destination instanceof AudioNode) {
       connect.call(this, destination, output, input);
+      _input = input;
     } else {
       connect.call(this, destination, output);
-      input = 0;
+      _input = 0;
     }
 
-    this._shim$connections.push([ destination, output, input ]);
+    this._shim$connections.push([ destination, output, _input ]);
   };
   AudioNode.prototype.connect.original = connect;
 }
