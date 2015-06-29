@@ -16,14 +16,14 @@ npm:
 npm install @mohayonao/web-audio-api-shim
 ```
 
-You can two versions `full` or `light`.
+You can choose two versions that are named `full` or `light`.
 The `light` version installs easy polyfills only.
 
 ```js
+// install full version
 require("@mohayonao/web-audio-api-shim");
 
-// or
-
+// install light version
 require("@mohayonao/web-audio-api-shim/light");
 ```
 
@@ -42,7 +42,7 @@ downloads:
 - `AudioContext#decodeAudioData`
 - `OfflineAudioContext#startRendering`
 
-The below API exclude in light version.
+The below API are excluded in the light version.
 
   - `AudioContext#close`
   - `AudioContext#resume`
