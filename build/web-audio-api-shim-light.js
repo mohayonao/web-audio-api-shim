@@ -1,7 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = require("./lib/install")(Infinity);
-
-},{"./lib/install":6}],2:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -39,7 +36,7 @@ function install() {
   installGetFloatTimeDomainData();
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -104,7 +101,7 @@ function install() {
   installCopyToChannel();
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -601,7 +598,7 @@ function install(stage) {
   }
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"stereo-panner-node":9}],5:[function(require,module,exports){
+},{"stereo-panner-node":9}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -766,7 +763,7 @@ function install(stage) {
   }
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -797,7 +794,10 @@ function install() {
 
 module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./AnalyserNode":2,"./AudioBuffer":3,"./AudioContext":4,"./AudioNode":5}],7:[function(require,module,exports){
+},{"./AnalyserNode":1,"./AudioBuffer":2,"./AudioContext":3,"./AudioNode":4}],6:[function(require,module,exports){
+module.exports = require("./lib/install")(0);
+
+},{"./lib/install":5}],7:[function(require,module,exports){
 var WS_CURVE_SIZE = 4096;
 var curveL = new Float32Array(WS_CURVE_SIZE);
 var curveR = new Float32Array(WS_CURVE_SIZE);
@@ -959,4 +959,4 @@ StereoPanner.polyfill = function() {
 module.exports = StereoPanner;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./stereo-panner-impl":8}]},{},[1]);
+},{"./stereo-panner-impl":8}]},{},[6]);
