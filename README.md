@@ -58,14 +58,14 @@ The below API are excluded in the light version.
 | getFloatTimeDomainData | :ok: | :ok:   | :ok: 37 | :ok: 22 | :ok: 30 | :x: 9  |
 | copyFromChannel        | :ok: | :ok:   | :ok: 43 | :ok: 30 | :ok: 27 | :x: 9  |
 | copyToChannel          | :ok: | :ok:   | :ok: 43 | :ok: 30 | :ok: 27 | :x: 9  |
-| createAudioWorker      | :x:  | :x:    | :x:  45 | :x:  31 | :x:  40 | :x: 9  |
+| createAudioWorker      | :x:  | :x:    | :x:  46 | :x:  33 | :x:  42 | :x: 9  |
 | createStereoPanner     | :ok: | :ok:   | :ok: 41 | :ok: 28 | :ok: 37 | :x: 9  |
-| decodeAudioData        | :ok: | :ok:   | :x:  45 | :x:  31 | :ok: 36 | :x: 9  |
+| decodeAudioData        | :ok: | :ok:   | :x:  46 | :x:  33 | :ok: 36 | :x: 9  |
 | close                  | :ok: | :x:    | :ok: 42 | :ok: 29 | :ok: 40 | :ok: 9 |
 | suspend                | :ok: | :x:    | :ok: 41 | :ok: 28 | :ok: 40 | :ok: 9 |
 | resume                 | :ok: | :x:    | :ok: 41 | :ok: 28 | :ok: 40 | :ok: 9 |
 | startRendering         | :ok: | :ok:   | :ok: 42 | :ok: 29 | :ok: 37 | :x: 9  |
-| disconnect             | :ok: | :x:    | :ok: 43 | :ok: 30 | :x:  40 | :x: 9  |
+| disconnect             | :ok: | :x:    | :ok: 43 | :ok: 30 | :x:  42 | :x: 9  |
 
 ## Online test suites
 - [test - web-audio-api-shim](http://mohayonao.github.io/web-audio-api-shim/test/)
